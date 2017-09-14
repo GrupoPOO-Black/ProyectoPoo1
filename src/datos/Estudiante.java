@@ -3,15 +3,15 @@ package datos;
 public class Estudiante {
 	
 	private String name;
-	private int idNumber;
+	private String idNumber;
 	private String career;
 	private String email;
 	private int score = 100;
-	private int phoneNumber;
+	private String phoneNumber;
 	
 	
 	//constructor
-	public Estudiante(String pName, int pIdNumber, String pCareer, String pEmail, int pScore, int pPhoneNumber) {
+	public Estudiante(String pName, String pIdNumber, String pCareer, String pEmail, int pScore, String pPhoneNumber) {
 		super();
 		this.name = pName;
 		this.idNumber = pIdNumber;
@@ -47,11 +47,11 @@ public class Estudiante {
 		this.name = name;
 	}
 
-	public int getIdNumber() {
+	public String getIdNumber() {
 		return idNumber;
 	}
 
-	public void setIdNumber(int idNumber) {
+	public void setIdNumber(String idNumber) {
 		this.idNumber = idNumber;
 	}
 
@@ -79,11 +79,11 @@ public class Estudiante {
 		this.score = score;
 	}
 
-	public int getPhoneNumber() {
+	public String getPhoneNumber() {
 		return phoneNumber;
 	}
 
-	public void setPhoneNumber(int phoneNumber) {
+	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
 	
