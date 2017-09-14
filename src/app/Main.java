@@ -24,7 +24,7 @@ public class Main {
 		List<Estudiante> sList = new ArrayList<Estudiante>();
 		
 		
-		sList.add(new Estudiante("Kenneth",2016,"Ing. Computacion","kfhv.24@gmail.com",100,89657436));
+		sList.add(new Estudiante("Kenneth","2016","Ing. Computacion","kfhv.24@gmail.com",100,"89657436"));
 
 		XmlParser.write(sList, "Estudiantes.xml");
 		
