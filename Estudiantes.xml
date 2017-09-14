@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.8.0_131" class="java.beans.XMLDecoder">
+ <object class="java.util.ArrayList">
+  <void method="add">
+   <object class="datos.Estudiante">
+    <void property="career">
+     <string>Ing. Computacion</string>
+    </void>
+    <void property="email">
+     <string>kfhv.24@gmail.com</string>
+    </void>
+    <void property="idNumber">
+     <int>2016</int>
+    </void>
+    <void property="name">
+     <string>Kenneth</string>
+    </void>
+    <void property="phoneNumber">
+     <int>89657436</int>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="datos.Estudiante">
+    <void property="career">
+     <string>Ing. Computacion</string>
+    </void>
+    <void property="email">
+     <string>kfhv.24@gmail.com</string>
+    </void>
+    <void property="idNumber">
+     <int>2016</int>
+    </void>
+    <void property="name">
+     <string>Kenneth</string>
+    </void>
+    <void property="phoneNumber">
+     <int>89657436</int>
+    </void>
+   </object>
+  </void>
+ </object>
+</java>
