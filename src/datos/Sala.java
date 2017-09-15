@@ -19,19 +19,14 @@ public class Sala {
 	private String status = "Inactive";
 	private float score = 100;
 	
+	public Sala(){
+	}
 	
 	
 	public Sala(int pcapacity){
 		id = id + cSalas;
 		cSalas++;
 		capacity = pcapacity;
-		
-		System.out.println("Sala c�digo: " + id + " ha sido creada.");
-	}
-	
-	public Sala(){
-		
-		
 	}
 	
 	public Sala(int pcapacity, String pstatus){
@@ -39,9 +34,6 @@ public class Sala {
 		cSalas++;
 		capacity = pcapacity;
 		status = pstatus;
-		
-		System.out.println("Sala c�digo: " + id + " ha sido creada.");
-		
 	}
 	
 	public void addresource(String resource) {
