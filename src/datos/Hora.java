@@ -60,6 +60,6 @@ public class Hora {
 	@Override
 	public String toString() {
 	    SimpleDateFormat simpDate = new SimpleDateFormat("HH:mm");
-		return "Desde " + simpDate.format(openTime) + " hasta " + simpDate.format(closeTime);
+		return "De " + simpDate.format(openTime) + " a " + simpDate.format(closeTime);
 	}
 }
