@@ -61,7 +61,7 @@ public class Sala {
 	}
 
 	public String toString(){
-		return(id + "\n Capacidad: " + capacity + "\n Estado: " + status);
+		return(id + "\n Capacidad: " + capacity + "\n Estado: " + status + "\n");
 	}
 	
 	
