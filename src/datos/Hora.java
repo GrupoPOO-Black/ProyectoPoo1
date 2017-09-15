@@ -15,9 +15,18 @@ public class Hora {
 		this.closeTime.setMinutes(30);
 	}
 	
-	public Hora(Date pOpenTime,Date pCloseTime){
-		this.openTime = pOpenTime;
-		this.closeTime = pCloseTime;
+	public Hora(int pOpentimeH, int pOpentimeM,int pClosetimeH, int pClosetimeM){
+		if(((pOpentimeH * 100) + pOpentimeM) < ((pClosetimeH * 100) + pClosetimeM)) {
+			this.openTime.setHours(pOpentimeH); 
+			this.openTime.setMinutes(pOpentimeM); 
+			this.closeTime.setHours(pClosetimeH); 
+			this.closeTime.setMinutes(pClosetimeM);
+		} else {
+			this.openTime.setHours(7); 
+			this.openTime.setMinutes(30); 
+			this.closeTime.setHours(19); 
+			this.closeTime.setMinutes(30);
+		}
 	}
 	
 	
