@@ -1,5 +1,7 @@
 package datos;
 
+import java.util.ArrayList;
+
 /**
  * 
  * 
@@ -12,7 +14,7 @@ public class Sala {
 	private static int cSalas = 001;
 	private String id = "SAL-";
 	private int capacity;
-	private String[] resources;
+	private ArrayList<String> resources = new ArrayList<String>();
 	
 	private String status = "Inactive";
 	private float score = 100;
@@ -24,7 +26,7 @@ public class Sala {
 		cSalas++;
 		capacity = pcapacity;
 		
-		System.out.println("Sala código: " + id + " ha sido creada.");
+		System.out.println("Sala cï¿½digo: " + id + " ha sido creada.");
 	}
 	
 	public Sala(){
@@ -38,10 +40,17 @@ public class Sala {
 		capacity = pcapacity;
 		status = pstatus;
 		
-		System.out.println("Sala código: " + id + " ha sido creada.");
+		System.out.println("Sala cï¿½digo: " + id + " ha sido creada.");
 		
 	}
 	
+	public void addresource(String resource) {
+		resources.add(resource);
+	}
+	
+	public ArrayList<String> getResources() {
+		return resources;
+	}
 	
 	public String getId() {
 		return id;
