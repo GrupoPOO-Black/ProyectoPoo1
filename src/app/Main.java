@@ -30,14 +30,12 @@ public class Main {
 		
 		
 		
-		
-		
-		List<Estudiante> listFromFile = (List<Estudiante>) XmlParser.read("Estudiantes.xml");
+		Sala sala = new Sala(5);
 	    
 	    
+	    Reserva reserva = new Reserva(sList.get(0), sala, new Hora());
 	    
-	    System.out.println(listFromFile.get(0).toString());
-	    
+	    System.out.println(reserva.toString());
 		
 	}
 

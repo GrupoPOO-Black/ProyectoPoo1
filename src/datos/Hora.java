@@ -4,13 +4,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Hora {
-	private Date openTime;
-	private Date closeTime;
+	private Date openTime = new Date();
+	private Date closeTime = new Date();
 	
 	
 	public Hora(){
-		this.openTime.setHours(7); this.openTime.setMinutes(30); 
-		this.closeTime.setHours(19); this.closeTime.setMinutes(30);
+		this.openTime.setHours(7); 
+		this.openTime.setMinutes(30); 
+		this.closeTime.setHours(19); 
+		this.closeTime.setMinutes(30);
 	}
 	
 	public Hora(Date pOpenTime,Date pCloseTime){

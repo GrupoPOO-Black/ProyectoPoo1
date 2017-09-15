@@ -64,7 +64,6 @@ public class Horario {
 				msg += hours.get(i).toString() + "\n";
 			}
 		}
-		
 		return msg;
 	}
 }

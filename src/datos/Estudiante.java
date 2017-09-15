@@ -31,8 +31,13 @@ public class Estudiante {
 
 	@Override
 	public String toString() {
-		return "Estudiante [name=" + name + ", idNumber=" + idNumber + ", career=" + career + ", email=" + email
-				+ ", score=" + score + ", phoneNumber=" + phoneNumber + "]";
+		String msg = "Nombre: " + name;
+		msg += "\nCarnet: " + idNumber;
+		msg += "\nCarrera: " + career;
+		msg += "\nEmail: " + email;
+		msg += "\nNumero de telefono: " + phoneNumber;
+		msg += "\nPuntuacion: " + score + "\n";
+		return msg;
 	}
 
 
