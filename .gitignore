@@ -69,3 +69,6 @@ local.properties
 *.jar
 *.war
 *.ear
+
+#XML FILES#
+*.xml

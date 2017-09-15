@@ -12,7 +12,7 @@ public class Reserva {
 	
 	
 	public Reserva(Estudiante pStudent,Sala pRoom,Hora pHour,String pSubject){
-		reserveID = reservations++;
+		reserveID = ++reservations;
 		student = pStudent;
 		room =  pRoom;
 		hour = pHour;
@@ -20,8 +20,8 @@ public class Reserva {
 	}
 	
 	public String toString() {
-		String msg = "Reserva:\n";
-		msg += "Asunto a tratar:\n" + subject;
+		String msg = "Reserva:\nID: " + reserveID;
+		msg += "\nAsunto a tratar:\n" + subject;
 		msg += "\nEstudiante:\n" + student.toString();
 		msg += "Sala:\n" +  room.toString();
 		msg += "Hora:\n" + hour.toString();
