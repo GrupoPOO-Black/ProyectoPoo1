@@ -49,6 +49,21 @@ public class Hora {
 		return false;
 	}
 	
+	public boolean validHour(Hora pHour) {
+		
+		int opentime1 = (openTime.getHours() * 100) + openTime.getMinutes();
+		int opentime2 = (pHour.getOpenTime().getHours() * 100) + pHour.getOpenTime().getMinutes();
+		
+		int closetime1 = (closeTime.getHours() * 100) + closeTime.getMinutes();
+		int closetime2 = (pHour.getCloseTime().getHours() * 100) + pHour.getCloseTime().getMinutes();
+		
+		if(opentime2 >= opentime1 && closetime2 <= closetime1) {
+			return true;
+		}
+		
+		return false;
+	}
+	
 	
 	
 	public Date getOpenTime() {
