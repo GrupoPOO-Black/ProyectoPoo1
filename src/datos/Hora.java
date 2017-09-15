@@ -6,7 +6,6 @@ import java.util.Date;
 public class Hora {
 	private Date openTime;
 	private Date closeTime;
-	private boolean open;
 	
 	
 	public Hora(){
@@ -19,9 +18,48 @@ public class Hora {
 		this.closeTime = pCloseTime;
 	}
 	
+	
+	
+	public boolean compareHours(Hora pHour) {
+		/*
+		 * Se establece un formato de hora tipo HHMM
+		 * Siendo un entero el cual dos cifras menos significativas sean los minutos y el resto las horas
+		 */
+		int opentime1 = (openTime.getHours() * 100) + openTime.getMinutes();
+		int opentime2 = (pHour.getOpenTime().getHours() * 100) + pHour.getOpenTime().getMinutes();
+		
+		int closetime1 = (closeTime.getHours() * 100) + closeTime.getMinutes();
+		int closetime2 = (pHour.getCloseTime().getHours() * 100) + pHour.getCloseTime().getMinutes();
+		
+		/*
+		 * Se verifica que las horas no choquen
+		 */
+		if(opentime1 < opentime2 && closetime1 > opentime2) {
+			return true;
+		}
+		
+		if(opentime1 < closetime2 && closetime1 > closetime2) {
+			return true;
+		}
+		/*
+		 * Si no chocan retorna falso
+		 */
+		return false;
+	}
+	
+	
+	
+	public Date getOpenTime() {
+		return openTime;
+	}
+
+	public Date getCloseTime() {
+		return closeTime;
+	}
+
 	@Override
 	public String toString() {
 	    SimpleDateFormat simpDate = new SimpleDateFormat("HH:mm");
-		return "Abierto desde " + simpDate.format(openTime) + " hasta " + simpDate.format(closeTime);
+		return "Desde " + simpDate.format(openTime) + " hasta " + simpDate.format(closeTime);
 	}
 }
