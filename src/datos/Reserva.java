@@ -22,7 +22,7 @@ public class Reserva {
 	public String toString() {
 		String msg = "Reserva:\n";
 		msg += "Asunto a tratar:\n" + subject;
-		msg += "Estudiante:\n" + student.toString();
+		msg += "\nEstudiante:\n" + student.toString();
 		msg += "Sala:\n" +  room.toString();
 		msg += "Hora:\n" + hour.toString();
 		return msg;
