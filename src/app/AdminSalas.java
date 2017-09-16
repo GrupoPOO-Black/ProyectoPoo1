@@ -14,7 +14,7 @@ import xml.*;
  * @author keneth
  *
  */
-public class Main {
+public class AdminSalas {
 	
 	static List<Estudiante> students = new ArrayList<Estudiante>();
 	static List<Sala> rooms = new ArrayList<Sala>();
@@ -77,6 +77,8 @@ public class Main {
 	static void verifyData() {
 		
 	}
+	
+	
 	
 	
 }
