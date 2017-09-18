@@ -1,10 +1,16 @@
 package app;
 import mailing.Mail;
 import java.util.List;
+
+import org.joda.time.DateTime;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.ArrayList;
 
 import datos.*;
 import xml.*;
+
 
 @SuppressWarnings("unchecked")
 /**
@@ -16,9 +22,10 @@ import xml.*;
  */
 public class AdminSalas {
 	
-	static List<Estudiante> students = new ArrayList<Estudiante>();
-	static List<Sala> rooms = new ArrayList<Sala>();
-	static List<Reserva> reservations = new ArrayList<Reserva>();
+	
+	
+	
+	
 	
 
 	
@@ -29,54 +36,46 @@ public class AdminSalas {
 		
 		
 		
-		students.add(new Estudiante("Kenneth","2016","Ing. Computacion","kfhv.24@gmail.com",100,"89657436"));
-		Sala sala = new Sala(5);
-	    Reserva reserva = new Reserva(students.get(0), sala, new Hora(),"Exposicion");
-	    Reserva reserva2 = new Reserva(students.get(0), sala, new Hora(),"Exposicion");
+		Horario schedule = new Horario();
+		schedule.setSchedule(Horario.MONDAY, new Hora(6,50,8,45));
+		
+		
+		//Codigo de prueba
+		GregorianCalendar date = new GregorianCalendar(2017,8,7);
+		Hora hour = new Hora();
+		
+		Estudiantes.students.add(new Estudiante("Kenneth","2016","Ing. Computacion","kfhv.24@gmail.com",100,"89657436"));
+		Sala sala = new Sala(5,schedule);
+		
+	    Reserva reserva = new Reserva(Estudiantes.students.get(0),sala, date,hour,"Exposicion");
+	
 	    System.out.println(reserva.toString());
-	    System.out.println(reserva2.toString());
+	    
+	    
+	    //--
+	    
+	    
 	    saveData();
+	    
 	}
 
 	static void saveData() {
-		try {
-			XmlParser.write(students, "EstudiantesDB.xml");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		try {
-			XmlParser.write(rooms, "SalasDB.xml");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		try {
-			XmlParser.write(reservations, "ReservacionesDB.xml");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		Estudiantes.save();
+		Horarios.save();
+		
 	}
 	
 	static void loadData() {
-		try {
-			students = (ArrayList<Estudiante>) XmlParser.read("EstudiantesDB.xml");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		try {
-			rooms = (ArrayList<Sala>) XmlParser.read("SalasDB.xml");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		try {
-			reservations = (ArrayList<Reserva>) XmlParser.read("ReservacionesDB.xml");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		
+		
+		
 	}
 	
 	static void verifyData() {
 		
 	}
+	
+	
 	
 	
 	
