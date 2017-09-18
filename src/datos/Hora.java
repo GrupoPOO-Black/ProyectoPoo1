@@ -1,7 +1,7 @@
 package datos;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.*;
 
 public class Hora {
 	private Date openTime = new Date();
@@ -14,8 +14,8 @@ public class Hora {
 		this.closeTime.setHours(19); 
 		this.closeTime.setMinutes(30);
 	}
-	
-	public Hora(int pOpentimeH, int pOpentimeM,int pClosetimeH, int pClosetimeM){
+
+public Hora(int pOpentimeH, int pOpentimeM,int pClosetimeH, int pClosetimeM){
 		if(((pOpentimeH * 100) + pOpentimeM) < ((pClosetimeH * 100) + pClosetimeM)) {
 			this.openTime.setHours(pOpentimeH); 
 			this.openTime.setMinutes(pOpentimeM); 
