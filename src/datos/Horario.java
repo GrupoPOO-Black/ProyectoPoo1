@@ -7,16 +7,26 @@ import java.util.*;
  */
 public class Horario {
 	
+	final public static int SUNDAY = 0;
+	final public static int MONDAY = 1;
+	final public static int TUESDAY = 2;
+	final public static int WENDSDAY = 3;
+	final public static int THURSDAY = 4;
+	final public static int FRIDAY = 5;
+	final public static int SATURDAY = 6;
+	
+	
 	private boolean[] opened = new boolean[7];
 	private List<Hora> hours = new ArrayList<Hora>();
 	
 	
 	public Horario(){
-		for(int i = 0;i < 8;i++) {
+		for(int i = 0;i < 7;i++) {
 			opened[i] = false;
 			hours.add(new Hora());
 		}
 	}
+	
 	/**
 	 * 
 	 * Establece la hora de disponibilidad de un dia especifico
@@ -24,10 +34,16 @@ public class Horario {
 	 * @param pDay
 	 * @param pHour
 	 */
-	public void setHorario(int pDay, Hora pHour) {
-		if(pDay >= 0 && pDay <= 7) {
+	public void setSchedule(int pDay, Hora pHour) {
+		if(validDay(pDay)) {
 			opened[pDay] = true;
 			hours.set(pDay, pHour);
+		}
+	}
+	
+	public void setSchedule(int pDay) {
+		if(validDay(pDay)) {
+			opened[pDay] = true;
 		}
 	}
 	/**
@@ -36,32 +52,41 @@ public class Horario {
 	 */
 	
 	public void closeDay(int pDay) {
-		if(pDay >= 0 && pDay <= 7) {
+		if(validDay(pDay)) {
 			opened[pDay] = false;
 		}
+	}
+	
+	private boolean validDay(int pDay) {
+		if(pDay >= 0 && pDay <= 6) {
+			return true;
+		}
+		return false;
 	}
 	
 	public String toString(){
 		String msg = "Horarios: \n";
 		for(int i = 0; i < 7;i++){
+			switch(i){
+			case 0:	msg += "	Domingo: ";
+					break;
+			case 1:	msg += "	Lunes: ";
+					break;
+			case 2:	msg += "	Martes: ";
+					break;
+			case 3:	msg += "	Miercoles: ";
+					break;
+			case 4:	msg += "	Jueves: ";
+					break;
+			case 5:	msg += "	Viernes: ";
+					break;
+			case 6:	msg += "	Sabado: ";
+					break;
+			}
 			if(opened[i]){
-				switch(i){
-				case 0:	msg += "	Domingo: ";
-						break;
-				case 1:	msg += "	Lunes: ";
-						break;
-				case 2:	msg += "	Martes: ";
-						break;
-				case 3:	msg += "	Miercoles: ";
-						break;
-				case 4:	msg += "	Jueves: ";
-						break;
-				case 5:	msg += "	Viernes: ";
-						break;
-				case 6:	msg += "	Sabado: ";
-						break;
-				}
 				msg += hours.get(i).toString() + "\n";
+			} else {
+				msg += " Cerrado.\n";
 			}
 		}
 		return msg;
