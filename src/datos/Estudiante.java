@@ -1,28 +1,38 @@
 package datos;
 
-public class Estudiante {
+import java.io.Serializable;
+
+public class Estudiante implements Serializable{
+	
+	private String idNumber;
 	
 	private String name;
-	private String idNumber;
 	private String career;
 	private String email;
-	private int score = 100;
 	private String phoneNumber;
 	
+	private int weekrReservations;
+	private int score;
 	
 	//constructor
 	public Estudiante(String pName, String pIdNumber, String pCareer, String pEmail, int pScore, String pPhoneNumber) {
-		super();
-		this.name = pName;
-		this.idNumber = pIdNumber;
-		this.career = pCareer;
-		this.email = pEmail;
-		this.score = pScore;
-		this.phoneNumber = pPhoneNumber;
+		name = pName;
+		idNumber = pIdNumber;
+		career = pCareer;
+		email = pEmail;
+		score = pScore;
+		phoneNumber = pPhoneNumber;
+		weekrReservations = 0;
 	}
 	
-	public Estudiante(){
-		
+	public Estudiante(String pName, String pIdNumber, String pCareer, String pEmail, int pScore, String pPhoneNumber,int pWeekrReservations) {
+		name = pName;
+		idNumber = pIdNumber;
+		career = pCareer;
+		email = pEmail;
+		score = pScore;
+		phoneNumber = pPhoneNumber;
+		weekrReservations = pWeekrReservations;
 	}
 	
 	
@@ -44,6 +54,14 @@ public class Estudiante {
 
 
 	//getters & setters
+	public void addWeekReservations() {
+		weekrReservations++;
+	}
+	
+	public int getWeekReservations() {
+		return weekrReservations;
+	}
+	
 	public String getName() {
 		return name;
 	}
