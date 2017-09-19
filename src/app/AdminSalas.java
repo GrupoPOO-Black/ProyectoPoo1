@@ -9,7 +9,6 @@ import java.util.GregorianCalendar;
 import java.util.ArrayList;
 
 import datos.*;
-import xml.*;
 
 
 @SuppressWarnings("unchecked")
@@ -22,13 +21,6 @@ import xml.*;
  */
 public class AdminSalas {
 	
-	
-	
-	
-	
-	
-
-	
 	public static void main(String[] args) throws Exception {
 		
 		//Inicilization
@@ -36,39 +28,57 @@ public class AdminSalas {
 		
 		
 		
-		Horario schedule = new Horario();
-		schedule.setSchedule(Horario.MONDAY, new Hora(6,50,8,45));
+		Estudiantes.printAll();
 		
+		
+		
+		Horario schedule = new Horario();
+		schedule.setSchedule(Horario.MONDAY, new Hora(6,50,20,45));
+		
+		Salas.addRoom(5,true,schedule);
+		Salas.save();
+		
+		
+		Salas.load();
+		
+		System.out.println(Salas.getRoom(0).toString());
 		
 		//Codigo de prueba
-		GregorianCalendar date = new GregorianCalendar(2017,8,7);
+		
+		GregorianCalendar date = new GregorianCalendar(2017,8,18);
+		
 		Hora hour = new Hora();
 		
-		Estudiantes.students.add(new Estudiante("Kenneth","2016","Ing. Computacion","kfhv.24@gmail.com",100,"89657436"));
-		Sala sala = new Sala(5,schedule);
+		Estudiantes.students.add(new Estudiante("Kenneth","2016094891","Ing. Computacion","kfhv.24@gmail.com",100,"89657436"));
+		Estudiantes.students.add(new Estudiante("Jose","2016094890","Ing. Forestal","asdr.24@gmail.com",100,"12345134"));
 		
-	    Reserva reserva = new Reserva(Estudiantes.students.get(0),sala, date,hour,"Exposicion");
-	
-	    System.out.println(reserva.toString());
-	    
+		Estudiantes.students.get(0).addWeekReservations();
+		
+		
+		
+	    System.out.println(Reservaciones.reserveRoom(Estudiantes.students.get(0),Salas.getRoom(0), date,hour,"Exposicion",1));
+
 	    
 	    //--
 	    
 	    
+	    
+	    
 	    saveData();
 	    
+	   
+	    System.out.println("END.");
 	}
 
-	static void saveData() {
-		Estudiantes.save();
-		Horarios.save();
-		
+	static void saveData(){
+		//Estudiantes.save();
+		//Horarios.save();
+		//Salas.save();
+		//Reservaciones.save();
 	}
 	
 	static void loadData() {
-		
-		
-		
+		Estudiantes.load();
 	}
 	
 	static void verifyData() {
