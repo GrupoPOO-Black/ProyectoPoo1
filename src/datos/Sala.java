@@ -21,6 +21,7 @@ public class Sala implements Serializable{
 	private static int cSalas = 001;
 	private String id = "SAL-";
 	private int capacity;
+	private String place;
 	private ArrayList<String> resources = new ArrayList<String>();
 	
 	private int status = INACTIVE;
@@ -31,29 +32,43 @@ public class Sala implements Serializable{
 	public Sala(){
 	}
 	
-	public Sala(int pcapacity, int pstatus,Horario pSchedule){
+	public Sala(int pcapacity, int pstatus,Horario pSchedule,String pPlace){
 		id = id + cSalas;
 		cSalas++;
 		capacity = pcapacity;
 		status = pstatus;
 		schedule = pSchedule;
+		place = pPlace;
 	}
 	
-	public Sala(int pcapacity,Horario pSchedule){
+	public Sala(int pcapacity,Horario pSchedule,String pPlace){
 		id = id + cSalas;
 		cSalas++;
 		capacity = pcapacity;
 		schedule = pSchedule;
+		place = pPlace;
 	}
 	
 	public void addresource(String resource) {
 		resources.add(resource);
 	}
 	
+	public void removeResource(int rIndex) {
+		resources.remove(rIndex);
+	}
+	
 	public ArrayList<String> getResources() {
 		return resources;
 	}
 	
+	public String getPlace() {
+		return place;
+	}
+
+	public void setPlace(String place) {
+		this.place = place;
+	}
+
 	public String getId() {
 		return id;
 	}
@@ -88,6 +103,8 @@ public class Sala implements Serializable{
 	public String toString(){
 		return(id + "\n Capacidad: " + capacity + "\n Estado: " + status + "\n" + schedule.toString());
 	}
+
+	
 	
 	
 }
