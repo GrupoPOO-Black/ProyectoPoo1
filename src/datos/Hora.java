@@ -1,13 +1,15 @@
 package datos;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class Hora {
+public class Hora implements Serializable {
 	private Date openTime = new Date();
 	private Date closeTime = new Date();
 	
 	
+	@SuppressWarnings("deprecation")
 	public Hora(){
 		this.openTime.setHours(7); 
 		this.openTime.setMinutes(30); 
@@ -15,6 +17,7 @@ public class Hora {
 		this.closeTime.setMinutes(30);
 	}
 
+@SuppressWarnings("deprecation")
 public Hora(int pOpentimeH, int pOpentimeM,int pClosetimeH, int pClosetimeM){
 		if(((pOpentimeH * 100) + pOpentimeM) < ((pClosetimeH * 100) + pClosetimeM)) {
 			this.openTime.setHours(pOpentimeH); 
@@ -31,6 +34,7 @@ public Hora(int pOpentimeH, int pOpentimeM,int pClosetimeH, int pClosetimeM){
 	
 	
 	
+	@SuppressWarnings("deprecation")
 	public boolean compareHours(Hora pHour) {
 		/*
 		 * Se establece un formato de hora tipo HHMM
