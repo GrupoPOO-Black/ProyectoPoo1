@@ -71,6 +71,26 @@ public class Reservaciones {
 		
 	}
 	
+	static String getStringFromStID(String pID) {
+		if(quantity() > 0) {
+			boolean rflag = false;
+			String msg = "Reservas del estudiante: " +  pID + "\n";
+			for(int i = 0; i < quantity();i++) {
+				if(reservations.get(i).getStudent().getIdNumber().equals(pID)) {
+					msg += reservations.get(i).toString();
+					rflag = true;
+				}
+			}
+			if(!rflag) {
+				return "Este estudiante no ha reservado ninguna sala";
+			}
+			return msg;
+		} else {
+			return "Este estudiante no ha reservado ninguna sala";
+		}
+		
+	}
+	
 	static int quantity() {
 		return reservations.size();
 	}
