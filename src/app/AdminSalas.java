@@ -28,8 +28,6 @@ public class AdminSalas {
 		
 		
 		
-		Estudiantes.printAll();
-		
 		
 		
 		Horario schedule = new Horario();
