@@ -1,28 +1,83 @@
 package app;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import datos.*;
-import xml.XmlParser;
 public class Reservaciones {
 	static List<Reserva> reservations = new ArrayList<Reserva>();
 	
-	static void reserveRoom() {
+	static boolean reserveRoom(Estudiante pStudent,Sala pRoom,GregorianCalendar pDate,Hora pHour,String pDetail, int pPeople) {
 		
+		if(!pRoom.getSchedule().getOpened()[pDate.get(GregorianCalendar.DAY_OF_WEEK) - 1]) {
+			System.out.println(pDate.get(GregorianCalendar.DAY_OF_WEEK) + "Dia no disponible.");
+			return false;
+		}
 		
+		if(!pRoom.getStatus()) {
+			return false;
+		}
+		
+		if(!pRoom.getSchedule().getHours().get(pDate.get(GregorianCalendar.DAY_OF_WEEK)).validHour(pHour)) {
+			return false;
+		}
+		
+		if(pStudent.getScore() < 70) {
+			return false;
+		}
+		
+		if(pRoom.getCapacity() < pPeople) {
+			return false;
+		}
+		
+		if(pStudent.getWeekReservations() > 2) {
+			return false;
+		}
+		
+		for(int i = 0;i < reservations.size();i++) {
+			if(reservations.get(i).getDate().get(GregorianCalendar.DAY_OF_MONTH) == pDate.get(GregorianCalendar.DAY_OF_MONTH)) {
+				if(reservations.get(i).getDate().get(GregorianCalendar.MONTH) == pDate.get(GregorianCalendar.MONTH)) {
+					if(reservations.get(i).getDate().get(GregorianCalendar.YEAR) == pDate.get(GregorianCalendar.YEAR)) {
+						if(reservations.get(i).getHour().compareHours(pHour)){
+							return false;
+						}
+					}
+				}
+			}
+		}
+		
+		pStudent.addWeekReservations();
+		
+		reservations.add(new Reserva(pStudent, pRoom, pDate, pHour, pDetail,pPeople));
+		
+		return true;
 	}
 	
-	public static void save() {
+	static void save() {
 		try {
-			XmlParser.write(reservations, "ReservacionesDB.xml");
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public static void load() {
+	static Reserva getReservation(int index) {
 		try {
-			reservations = (ArrayList<Reserva>) XmlParser.read("ReservacionesDB.xml");
+			return reservations.get(index);
+		} catch (Exception e) {
+			return null;
+		}
+		
+	}
+	
+	static int quantity() {
+		return reservations.size();
+	}
+	
+	static void load() {
+		try {
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
