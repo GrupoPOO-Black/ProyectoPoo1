@@ -1,5 +1,6 @@
 package datos;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -10,7 +11,8 @@ import java.util.ArrayList;
  *
  */
 
-public class Sala {
+@SuppressWarnings("serial")
+public class Sala implements Serializable{
 	
 	public static boolean INACTIVE = false;
 	public static boolean ACTIVE = false;
