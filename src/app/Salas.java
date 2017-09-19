@@ -1,11 +1,12 @@
 package app;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import datos.Horario;
 import datos.Sala;
-import xml.XmlParser;
+import filemanager.Filemanager;
 
 class Salas {
 	static List<Sala> rooms = new ArrayList<Sala>();
@@ -18,19 +19,21 @@ class Salas {
 		rooms.add(new Sala(pCapacity,pstatus,pSchedule));
 	}
 	
-	public static void save() {
+	static Sala getRoom(int index) {
 		try {
-			XmlParser.write(rooms, "SalasDB.xml");
+			return rooms.get(index);
 		} catch (Exception e) {
-			e.printStackTrace();
+			return null;
 		}
+		
 	}
 	
-	public static void load() {
-		try {
-			rooms = (ArrayList<Sala>) XmlParser.read("SalasDB.xml");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public static void save() {
+		Filemanager.save(rooms, "Salas.db");
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static void load() throws ClassNotFoundException, IOException {
+		rooms = (List<Sala>) Filemanager.load("Salas.db");
 	}
 }
