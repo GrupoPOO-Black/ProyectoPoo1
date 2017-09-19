@@ -15,7 +15,7 @@ public class Reservaciones {
 			return false;
 		}
 		
-		if(!pRoom.getStatus()) {
+		if(pRoom.getStatus() != Sala.ACTIVE) {
 			return false;
 		}
 		

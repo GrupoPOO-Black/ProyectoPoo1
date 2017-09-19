@@ -14,15 +14,16 @@ import java.util.ArrayList;
 @SuppressWarnings("serial")
 public class Sala implements Serializable{
 	
-	public static boolean INACTIVE = false;
-	public static boolean ACTIVE = false;
+	public static int INACTIVE = 0;
+	public static int MAINTENACE = 1;
+	public static int ACTIVE = 2;
 	
 	private static int cSalas = 001;
 	private String id = "SAL-";
 	private int capacity;
 	private ArrayList<String> resources = new ArrayList<String>();
 	
-	private boolean status = INACTIVE;
+	private int status = INACTIVE;
 	private float score = 100;
 	
 	private Horario schedule;
@@ -30,7 +31,7 @@ public class Sala implements Serializable{
 	public Sala(){
 	}
 	
-	public Sala(int pcapacity, boolean pstatus,Horario pSchedule){
+	public Sala(int pcapacity, int pstatus,Horario pSchedule){
 		id = id + cSalas;
 		cSalas++;
 		capacity = pcapacity;
@@ -61,7 +62,7 @@ public class Sala implements Serializable{
 		return capacity;
 	}
 
-	public boolean getStatus() {
+	public int getStatus() {
 		return status;
 	}
 
@@ -77,8 +78,11 @@ public class Sala implements Serializable{
 		schedule = pSchedule;
 	}
 	
-	public void switchStatus() {
-		status = !status;
+	public void switchStatus(int pStatus) {
+		if(pStatus >=0 && pStatus <= 2) {
+			status = pStatus;	
+		}
+		
 	}
 
 	public String toString(){
