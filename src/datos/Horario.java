@@ -1,11 +1,12 @@
 package datos;
+import java.io.Serializable;
 import java.util.*;
 /**
  * Horario de una Sala
  * @author Kenneth
  *
  */
-public class Horario {
+public class Horario implements Serializable {
 	
 	final public static int SUNDAY = 0;
 	final public static int MONDAY = 1;
@@ -41,6 +42,16 @@ public class Horario {
 		}
 	}
 	
+	
+	
+	public boolean[] getOpened() {
+		return opened;
+	}
+
+	public List<Hora> getHours() {
+		return hours;
+	}
+
 	public void setSchedule(int pDay) {
 		if(validDay(pDay)) {
 			opened[pDay] = true;
