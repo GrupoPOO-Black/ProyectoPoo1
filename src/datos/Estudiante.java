@@ -1,6 +1,8 @@
 package datos;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Estudiante implements Serializable{
 	
@@ -10,6 +12,9 @@ public class Estudiante implements Serializable{
 	private String career;
 	private String email;
 	private String phoneNumber;
+	
+	private List<String> incidents = new ArrayList<String>();
+	
 	
 	private int weekrReservations;
 	private int score;
@@ -49,11 +54,38 @@ public class Estudiante implements Serializable{
 		msg += "\nPuntuacion: " + score + "\n";
 		return msg;
 	}
-
-
-
-
+	
+	public String showInfo() {
+		String msg = "Nombre: " + name;
+		msg += "\nCarnet: " + idNumber;
+		msg += "\nCarrera: " + career;
+		msg += "\nEmail: " + email;
+		msg += "\nNumero de telefono: " + phoneNumber;
+		msg += "\nPuntuacion: " + score + "\n";
+		if(incidents.size()>0) {
+			msg += "Incidentes: \n";
+			for(int i = 0;i < incidents.size();i++) {
+				msg += "	" + (i + 1) + ") " + incidents.get(i) + "\n";
+			}
+		}
+		return msg;
+	}
+	
 	//getters & setters
+	public void addIncident(String pIncident, int penalization) {
+		incidents.add(pIncident);
+		if(score >= penalization) {
+			score -= penalization;
+		} else {
+			score = 0;
+		}
+	}
+	
+	public List<String> getIncidents(){
+		
+		return incidents;
+	}
+	
 	public void addWeekReservations() {
 		weekrReservations++;
 	}

@@ -6,6 +6,7 @@ import org.joda.time.DateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import datos.*;
@@ -24,7 +25,6 @@ public class AdminSalas {
 	public static void main(String[] args) throws Exception {
 		
 		//Inicilization
-		loadData();
 		
 		
 		
@@ -75,7 +75,7 @@ public class AdminSalas {
 		//Reservaciones.save();
 	}
 	
-	static void loadData() {
+	static void loadData() throws ClassNotFoundException, IOException {
 		Estudiantes.load();
 	}
 	
