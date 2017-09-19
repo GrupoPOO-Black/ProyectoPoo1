@@ -33,7 +33,7 @@ public class AdminSalas {
 		Horario schedule = new Horario();
 		schedule.setSchedule(Horario.MONDAY, new Hora(6,50,20,45));
 		
-		Salas.addRoom(5,true,schedule);
+		Salas.addRoom(5,Sala.ACTIVE,schedule,"En algun lugar");
 		Salas.save();
 		
 		
@@ -67,7 +67,11 @@ public class AdminSalas {
 	   
 	    System.out.println("END.");
 	}
-
+	
+	static void importData() {
+		
+	}
+	
 	static void saveData(){
 		//Estudiantes.save();
 		//Horarios.save();
