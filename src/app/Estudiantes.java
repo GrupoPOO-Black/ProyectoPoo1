@@ -20,13 +20,13 @@ import org.w3c.dom.Element;
 class Estudiantes {
 	static List<Estudiante> students = new ArrayList<Estudiante>();
 	
-	static boolean addStudent(String pName, String pIdNumber, String pCareer, String pEmail, String pPhoneNumber) {
+	static String addStudent(String pName, String pIdNumber, String pCareer, String pEmail, String pPhoneNumber) {
 		if(verifyStudentID(pIdNumber)) {
 			students.add(new Estudiante(pName, pIdNumber, pCareer, pEmail, 100, pPhoneNumber));
-			return true;
+			return "Se agregó el estudiante.";
 		}
 		
-		return false;
+		return "Número de carnet no válido.";
 	}
 	
 	private static boolean verifyStudentID(String pIdNumber) {
@@ -88,6 +88,17 @@ class Estudiantes {
 			e.printStackTrace();
 		}
 	}
+	
+	public static String consultStudent(String id) {
+		for(int i = 0;i < students.size();i++) {
+			if(students.get(i).getIdNumber().equals(id)) {
+				return students.get(i).toString();
+			}
+		}
+		
+		return "No hay ningún estudiante registrado con ese carnet.";
+	}
+	
 	
 	public static void printAll() {
 		for(int i = 0;i < students.size();i++) {

@@ -19,13 +19,21 @@ class Salas {
 		rooms.add(new Sala(pCapacity,pstatus,pSchedule,pPlace));
 	}
 	
-	static Sala getRoom(int index) {
-		try {
-			return rooms.get(index);
-		} catch (Exception e) {
-			return null;
+	static String[] getRoomList() {
+		String[] roomList = new String[rooms.size()];
+		for(int i = 0; i < rooms.size();i++) {
+			roomList[i] = rooms.get(i).getId();
 		}
-		
+		return roomList;
+	}
+	
+	static String getRoomInfo(String pId) {
+		for(int i = 0; i < rooms.size();i++) {
+			if(rooms.get(i).getId().equals(pId)){
+				return rooms.get(i).toString();
+			}
+		}
+		return "No hay una sala con ese código.";
 	}
 	
 	static boolean changeStatus(String pID,int pStatus) {

@@ -14,4 +14,10 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<variableList>
+		<variable>
+			<name>Icon</name>
+			<value>file:/home/keneth/git/ProyectoPoo1/src/clock-icon.png</value>
+		</variable>
+	</variableList>
 </projectDescription>

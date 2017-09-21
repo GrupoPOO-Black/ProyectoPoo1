@@ -6,6 +6,7 @@ import java.util.*;
  * @author Kenneth
  *
  */
+@SuppressWarnings("serial")
 public class Horario implements Serializable {
 	
 	final public static int SUNDAY = 0;
@@ -16,12 +17,17 @@ public class Horario implements Serializable {
 	final public static int FRIDAY = 5;
 	final public static int SATURDAY = 6;
 	
+	private static int ids = 1;
 	
+	
+	private String id = "H-";
 	private boolean[] opened = new boolean[7];
 	private List<Hora> hours = new ArrayList<Hora>();
 	
 	
 	public Horario(){
+		id = id + ids;
+		ids++;
 		for(int i = 0;i < 7;i++) {
 			opened[i] = false;
 			hours.add(new Hora());
@@ -43,6 +49,9 @@ public class Horario implements Serializable {
 	}
 	
 	
+	public String getId() {
+		return id;
+	}
 	
 	public boolean[] getOpened() {
 		return opened;
@@ -76,7 +85,7 @@ public class Horario implements Serializable {
 	}
 	
 	public String toString(){
-		String msg = "Horarios: \n";
+		String msg = "Horario ID: " + id + " \n";
 		for(int i = 0; i < 7;i++){
 			switch(i){
 			case 0:	msg += "	Domingo: ";

@@ -23,49 +23,15 @@ import datos.*;
 public class AdminSalas {
 	
 	public static void main(String[] args) throws Exception {
+		Horario horario = new Horario();
+		
+		Horarios.addSchedule(horario);
 		
 		//Inicilization
+		UI.init();
 		
-		
-		
-		
-		
-		Horario schedule = new Horario();
-		schedule.setSchedule(Horario.MONDAY, new Hora(6,50,20,45));
-		
-		Salas.addRoom(5,Sala.ACTIVE,schedule,"En algun lugar");
-		Salas.save();
-		
-		
-		Salas.load();
-		
-		System.out.println(Salas.getRoom(0).toString());
-		
-		//Codigo de prueba
-		
-		GregorianCalendar date = new GregorianCalendar(2017,8,18);
-		
-		Hora hour = new Hora();
-		
-		Estudiantes.students.add(new Estudiante("Kenneth","2016094891","Ing. Computacion","kfhv.24@gmail.com",100,"89657436"));
-		Estudiantes.students.add(new Estudiante("Jose","2016094890","Ing. Forestal","asdr.24@gmail.com",100,"12345134"));
-		
-		Estudiantes.students.get(0).addWeekReservations();
-		
-		
-		
-	    System.out.println(Reservaciones.reserveRoom(Estudiantes.students.get(0),Salas.getRoom(0), date,hour,"Exposicion",1));
-
-	    
 	    //--
-	    
-	    
-	    
-	    
-	    saveData();
-	    
-	   
-	    System.out.println("END.");
+		Estudiantes.addStudent("Beto", "123", "NADA", "k@f.c", "asdasd");
 	}
 	
 	static void importData() {

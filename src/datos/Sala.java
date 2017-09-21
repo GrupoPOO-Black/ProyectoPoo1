@@ -14,9 +14,9 @@ import java.util.ArrayList;
 @SuppressWarnings("serial")
 public class Sala implements Serializable{
 	
-	public static int INACTIVE = 0;
-	public static int MAINTENACE = 1;
-	public static int ACTIVE = 2;
+	public final static int INACTIVE = 0;
+	public final static int MAINTENACE = 1;
+	public final static int ACTIVE = 2;
 	
 	private static int cSalas = 001;
 	private String id = "SAL-";
@@ -101,7 +101,19 @@ public class Sala implements Serializable{
 	}
 
 	public String toString(){
-		return(id + "\n Capacidad: " + capacity + "\n Estado: " + status + "\n" + schedule.toString());
+		String msg = id + "\n Capacidad: " + capacity + "\n Estado: ";
+		switch(status){
+		case INACTIVE:
+			msg += "Inactiva";
+			break;
+		case ACTIVE:
+			msg += "Activa";
+			break;	
+		case MAINTENACE:
+			msg += "En mantenimiento";
+			break;
+		}
+		return(msg + "\n" + schedule.toString());
 	}
 
 	

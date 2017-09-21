@@ -82,11 +82,31 @@ public class Reservaciones {
 				}
 			}
 			if(!rflag) {
-				return "Este estudiante no ha reservado ninguna sala";
+				return "Este estudiante no ha reservado ninguna sala.";
 			}
 			return msg;
 		} else {
-			return "Este estudiante no ha reservado ninguna sala";
+			return "Este estudiante no ha reservado ninguna sala.";
+		}
+		
+	}
+	
+	static String getStringFromRmID(String pID) {
+		if(quantity() > 0) {
+			boolean rflag = false;
+			String msg = "Reservas de la sala: " +  pID + "\n";
+			for(int i = 0; i < quantity();i++) {
+				if(reservations.get(i).getRoom().getId().equals(pID)) {
+					msg += reservations.get(i).toString();
+					rflag = true;
+				}
+			}
+			if(!rflag) {
+				return "Sala no tiene reservas";
+			}
+			return msg;
+		} else {
+			return "Sala no tiene reservas";
 		}
 		
 	}

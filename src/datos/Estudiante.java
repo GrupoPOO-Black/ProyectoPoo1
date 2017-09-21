@@ -14,8 +14,6 @@ public class Estudiante implements Serializable{
 	private String phoneNumber;
 	
 	private List<String> incidents = new ArrayList<String>();
-	
-	
 	private int weekrReservations;
 	private int score;
 	
