@@ -88,19 +88,19 @@ public class Horario implements Serializable {
 		String msg = "Horario ID: " + id + " \n";
 		for(int i = 0; i < 7;i++){
 			switch(i){
-			case 0:	msg += "	Domingo: ";
+			case 0:	msg += " Domingo: ";
 					break;
-			case 1:	msg += "	Lunes: ";
+			case 1:	msg += " Lunes: ";
 					break;
-			case 2:	msg += "	Martes: ";
+			case 2:	msg += " Martes: ";
 					break;
-			case 3:	msg += "	Miercoles: ";
+			case 3:	msg += " Miercoles: ";
 					break;
-			case 4:	msg += "	Jueves: ";
+			case 4:	msg += " Jueves: ";
 					break;
-			case 5:	msg += "	Viernes: ";
+			case 5:	msg += " Viernes: ";
 					break;
-			case 6:	msg += "	Sabado: ";
+			case 6:	msg += " Sabado: ";
 					break;
 			}
 			if(opened[i]){

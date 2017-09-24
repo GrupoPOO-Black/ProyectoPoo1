@@ -3,6 +3,7 @@ import mailing.Mail;
 import java.util.List;
 
 import org.joda.time.DateTime;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -23,15 +24,27 @@ import datos.*;
 public class AdminSalas {
 	
 	public static void main(String[] args) throws Exception {
-		Horario horario = new Horario();
 		
+		Horario horario = new Horario();
+		horario.setSchedule(1);
+		horario.setSchedule(2);
+		horario.setSchedule(3);
+		horario.setSchedule(4);
+		horario.setSchedule(5);
+		horario.setSchedule(6);
 		Horarios.addSchedule(horario);
+		
+		for(int i = 0;i < 150;i++) {
+			
+			Salas.addRoom(6,Sala.ACTIVE, horario, "En algun lugar");
+			
+		}
 		
 		//Inicilization
 		UI.init();
 		
 	    //--
-		Estudiantes.addStudent("Beto", "123", "NADA", "k@f.c", "asdasd");
+		Estudiantes.addStudent("Kenneth Herrera Valverde", "2016094891", "Ing. Computación", "kfhv.24@gmail.com", "89657436");
 	}
 	
 	static void importData() {

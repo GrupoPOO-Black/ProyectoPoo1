@@ -19,9 +19,8 @@ public class Mail
      * @return
      */
     public static boolean sendMail(String msg,String subject,String to){
-    	try
-        {
-            // Propiedades de la conexión
+    	try {
+            // Propiedades de la conexion
             Properties props = new Properties();
             props.setProperty("mail.smtp.host", "smtp.gmail.com");
             props.setProperty("mail.smtp.starttls.enable", "true");

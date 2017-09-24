@@ -7,7 +7,7 @@ import java.util.*;
 public class Hora implements Serializable {
 	private Date openTime = new Date();
 	private Date closeTime = new Date();
-	
+	private boolean invalidTime = false;
 	
 	@SuppressWarnings("deprecation")
 	public Hora(){
@@ -19,46 +19,51 @@ public class Hora implements Serializable {
 
 @SuppressWarnings("deprecation")
 public Hora(int pOpentimeH, int pOpentimeM,int pClosetimeH, int pClosetimeM){
-		if(((pOpentimeH * 100) + pOpentimeM) < ((pClosetimeH * 100) + pClosetimeM)) {
-			this.openTime.setHours(pOpentimeH); 
-			this.openTime.setMinutes(pOpentimeM); 
-			this.closeTime.setHours(pClosetimeH); 
-			this.closeTime.setMinutes(pClosetimeM);
-		} else {
-			this.openTime.setHours(7); 
-			this.openTime.setMinutes(30); 
-			this.closeTime.setHours(19); 
-			this.closeTime.setMinutes(30);
-		}
+	this.openTime.setHours(pOpentimeH); 
+	this.openTime.setMinutes(pOpentimeM); 
+	this.closeTime.setHours(pClosetimeH); 
+	this.closeTime.setMinutes(pClosetimeM);
+	
+	if(((getOpenTime().getHours() * 100) + getOpenTime().getMinutes()) >= (getCloseTime().getHours() * 100) + getCloseTime().getMinutes()) {
+		this.openTime.setHours(7); 
+		this.openTime.setMinutes(30); 
+		this.closeTime.setHours(19); 
+		this.closeTime.setMinutes(30);
+		
+		invalidTime = true;
 	}
+}
 	
 	
 	
 	@SuppressWarnings("deprecation")
 	public boolean compareHours(Hora pHour) {
-		/*
-		 * Se establece un formato de hora tipo HHMM
-		 * Siendo un entero el cual dos cifras menos significativas sean los minutos y el resto las horas
-		 */
+		
 		int opentime1 = (openTime.getHours() * 100) + openTime.getMinutes();
 		int opentime2 = (pHour.getOpenTime().getHours() * 100) + pHour.getOpenTime().getMinutes();
-		
 		int closetime1 = (closeTime.getHours() * 100) + closeTime.getMinutes();
 		int closetime2 = (pHour.getCloseTime().getHours() * 100) + pHour.getCloseTime().getMinutes();
-		
-		/*
-		 * Se verifica que las horas no choquen
-		 */
-		if(opentime1 < opentime2 && closetime1 > opentime2) {
+	
+		if(opentime1 == opentime2 && closetime1 == closetime2) {
 			return true;
 		}
 		
-		if(opentime1 < closetime2 && closetime1 > closetime2) {
+		if(opentime1 < opentime2 && opentime2 < closetime1) {
 			return true;
 		}
-		/*
-		 * Si no chocan retorna falso
-		 */
+		
+		if(opentime1 < closetime2 && closetime2 < closetime1) {
+			return true;
+		}
+		
+		if(opentime2 < opentime1 && opentime1 < closetime2) {
+			return true;
+		}
+		
+		if(opentime2 < closetime1 && closetime1 < closetime2) {
+			return true;
+		}
+		
 		return false;
 	}
 	
@@ -79,6 +84,10 @@ public Hora(int pOpentimeH, int pOpentimeM,int pClosetimeH, int pClosetimeM){
 	
 	
 	
+	public boolean isInvalidTime() {
+		return invalidTime;
+	}
+
 	public Date getOpenTime() {
 		return openTime;
 	}

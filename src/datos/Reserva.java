@@ -1,6 +1,7 @@
 package datos;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Reserva implements Serializable {
@@ -12,6 +13,8 @@ public class Reserva implements Serializable {
 	private GregorianCalendar date;
 	private Hora hour;
 	private String subject;
+	
+	private boolean canceled = false;
 	
 	
 	public Reserva(Estudiante pStudent,Sala pRoom,GregorianCalendar pDate,Hora pHour,String pSubject,int pPeople){
@@ -47,8 +50,11 @@ public class Reserva implements Serializable {
 	public Hora getHour() {
 		return hour;
 	}
-
-
+	
+	public void cancelReservation() {
+		canceled = true;
+		student.reservationCanceled();
+	}
 
 	public String getSubject() {
 		return subject;
@@ -59,11 +65,14 @@ public class Reserva implements Serializable {
 	}
 
 	public String toString() {
-		String msg = "Reserva:\nID: " + reserveID;
+		String msg = "\nReserva:\nID: " + reserveID;
+		if(canceled) {
+			msg += " CANCELADA\n";
+		}
 		msg += "\nAsunto a tratar:\n" + subject;
-		msg += "\nEstudiante:\n" + student.toString();
-		msg += "Sala:\n" +  room.toString();
-		msg += "Fecha:\n " + date.get(date.DAY_OF_MONTH) + "/" + date.get(date.MONTH) + "/" +  date.get(date.YEAR);
+		msg += "\nEstudiante:\n" + student.getName();
+		msg += "\nSala:\n" +  room.getInfo();
+		msg += "Fecha:\n " + new SimpleDateFormat("dd/MMM/yyyy").format(new Date(date.getTimeInMillis()));
 		msg += "\nHora:\n" + hour.toString();
 		return msg;
 	}

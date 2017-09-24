@@ -15,17 +15,49 @@ import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
+import javax.swing.Timer;
 import javax.swing.JTextPane;
 import java.awt.Window.Type;
 import javax.swing.JFormattedTextField;
 import javax.swing.text.*;
 
-import datos.Hora;
-import datos.Horario;
+import org.jdatepicker.impl.*;
 
-import java.util.concurrent.TimeUnit;
+import datos.*;
+import mailing.Mail;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Properties;
+
+import javax.swing.JTextArea;
+import javax.swing.UIManager;
+import java.awt.Color;
+import javax.swing.JList;
+import javax.swing.border.BevelBorder;
+import javax.swing.ListSelectionModel;
+import javax.swing.JScrollBar;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerDateModel;
+import java.util.Calendar;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.border.LineBorder;
+import javax.swing.border.CompoundBorder;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 
 public class UI {
 
@@ -36,11 +68,33 @@ public class UI {
 	private JTextField EA_phone;
 	private JTextField EC_id;
 	private JTextField SA_place;
+	
+	private static Date date = new Date();
+	private ArrayList<String> searchtmpResources = new ArrayList<String>();
+	private ArrayList<String> tmpEmails = new ArrayList<String>();
+	private String[] tmpArray = new String[0];
+	
+	private JTextField SM_place;
+	private JTextField SM_resource;
+	private JTextField RB_resource;
+	private JTextField RA_email;
+	private JTextField RA_idnumber;
+	
+	private static Properties config;
+	private static int lastWeek;
+	
+	private static InputStream input = null;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void init() {
+		loadProp();
+		try {
+			lastWeek = Integer.parseInt(config.getProperty("lastWeek"));
+		} catch(Exception e) {
+			lastWeek = new GregorianCalendar().get(GregorianCalendar.WEEK_OF_YEAR);
+		}	
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -59,11 +113,56 @@ public class UI {
 	public UI() {
 		initialize();
 	}
+	
+	private static void loadProp() {
+		try {
+
+			input = new FileInputStream("config.properties");
+
+			config.load(input);
+
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		} finally {
+			if (input != null) {
+				try {
+					input.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+	}
+	
+	private static void saveProp() {
+		FileOutputStream output = null;
+		try {
+			output = new FileOutputStream("config.properties");
+
+			config.store(output, null);
+
+		} catch (IOException io) {
+			io.printStackTrace();
+		} finally {
+			if (output != null) {
+				try {
+					output.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+
+		}
+	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+
+		Horarios.tmpSchedule = new Horario();
+		
 		frmAdministracinDeSalas = new JFrame();
 		frmAdministracinDeSalas.setType(Type.UTILITY);
 		frmAdministracinDeSalas.setTitle("Administración de salas");
@@ -93,10 +192,8 @@ public class UI {
 		mnSala.add(mntmAgregar);
 		
 		JMenuItem mntmModificar = new JMenuItem("Modificar");
-		mnSala.add(mntmModificar);
 		
-		JMenuItem mntmCalificar = new JMenuItem("Calificar");
-		mnSala.add(mntmCalificar);
+		mnSala.add(mntmModificar);
 		
 		JMenuItem mntmConsultar = new JMenuItem("Consultar");
 		
@@ -113,13 +210,18 @@ public class UI {
 		menuBar.add(mnReservas);
 		
 		JMenuItem mntmNueva = new JMenuItem("Nueva");
+		
 		mnReservas.add(mntmNueva);
 		
 		JMenuItem mntmConsultar_1 = new JMenuItem("Consultar");
+		
 		mnReservas.add(mntmConsultar_1);
 		
-		JMenu mnEstadisticas = new JMenu("Estadisticas");
+		JMenu mnEstadisticas = new JMenu("Otro");
 		menuBar.add(mnEstadisticas);		
+		
+		JLabel label_4 = new JLabel("    ");
+		menuBar.add(label_4);
 		
 		JLabel lblHora = new JLabel("hora");
 		menuBar.add(lblHora);
@@ -236,10 +338,14 @@ public class UI {
 		btnConsultar.setBounds(377, 9, 117, 25);
 		Estu_Consultar.add(btnConsultar);
 		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.setBounds(12, 41, 482, 239);
+		Estu_Consultar.add(scrollPane);
+		
 		JTextPane EC_result = new JTextPane();
+		scrollPane.setViewportView(EC_result);
 		EC_result.setEditable(false);
-		EC_result.setBounds(12, 41, 482, 239);
-		Estu_Consultar.add(EC_result);
 		
 		JPanel Sala_Agregar = new JPanel();
 		Cards.add(Sala_Agregar, "Sala_Agregar");
@@ -250,7 +356,7 @@ public class UI {
 		Sala_Agregar.add(lblCapacidad);
 		
 		JComboBox SA_capacity = new JComboBox();
-		SA_capacity.setModel(new DefaultComboBoxModel(new String[] {"4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"}));
+		SA_capacity.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"}));
 		SA_capacity.setBounds(107, 7, 197, 24);
 		Sala_Agregar.add(SA_capacity);
 		
@@ -281,14 +387,92 @@ public class UI {
 		SA_schedule.setBounds(107, 88, 197, 24);
 		Sala_Agregar.add(SA_schedule);
 		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(12, 120, 292, 160);
+		Sala_Agregar.add(scrollPane_1);
+		
 		JTextPane SA_result = new JTextPane();
-		SA_result.setBounds(12, 120, 292, 160);
-		Sala_Agregar.add(SA_result);
+		scrollPane_1.setViewportView(SA_result);
 		
 		JButton btnAgregarSala = new JButton("Agregar Sala");
 		
 		btnAgregarSala.setBounds(316, 255, 178, 25);
 		Sala_Agregar.add(btnAgregarSala);
+		
+		JPanel Sala_Modificar = new JPanel();
+		Cards.add(Sala_Modificar, "Sala_Modificar");
+		Sala_Modificar.setLayout(null);
+		
+		JLabel label_5 = new JLabel("ID de sala:");
+		label_5.setBounds(12, 17, 82, 15);
+		Sala_Modificar.add(label_5);
+		
+		JComboBox SM_room = new JComboBox(new Object[]{});
+		
+		SM_room.setBounds(112, 12, 84, 24);
+		Sala_Modificar.add(SM_room);
+		
+		JLabel lblCambiarUbicacin = new JLabel("Cambiar ubicación:");
+		lblCambiarUbicacin.setBounds(214, 44, 186, 15);
+		Sala_Modificar.add(lblCambiarUbicacin);
+		
+		SM_place = new JTextField();
+		SM_place.setBounds(208, 64, 163, 19);
+		Sala_Modificar.add(SM_place);
+		SM_place.setColumns(10);
+		
+		JButton SM_changePlace = new JButton("Cambiar");
+		
+		SM_changePlace.setBounds(383, 61, 111, 25);
+		Sala_Modificar.add(SM_changePlace);
+		
+		JLabel lblEstado_1 = new JLabel("Estado:");
+		lblEstado_1.setBounds(214, 95, 60, 15);
+		Sala_Modificar.add(lblEstado_1);
+		
+		JComboBox SM_status = new JComboBox();
+		SM_status.setModel(new DefaultComboBoxModel(new String[] {"Inactiva", "En mantenimiento", "Activa"}));
+		SM_status.setBounds(208, 122, 163, 24);
+		Sala_Modificar.add(SM_status);
+		
+		JButton SM_changeStatus = new JButton("Cambiar");
+		
+		SM_changeStatus.setBounds(383, 122, 111, 25);
+		Sala_Modificar.add(SM_changeStatus);
+		
+		JLabel lblRecursos = new JLabel("Recursos:");
+		lblRecursos.setBounds(214, 158, 126, 15);
+		Sala_Modificar.add(lblRecursos);
+		
+		JButton SM_addResource = new JButton("Agregar");
+		
+		SM_addResource.setBounds(383, 217, 111, 25);
+		Sala_Modificar.add(SM_addResource);
+		
+		JList SM_resources = new JList();
+		SM_resources.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		SM_resources.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		SM_resources.setBounds(208, 185, 163, 95);
+		Sala_Modificar.add(SM_resources);
+		
+		SM_resource = new JTextField();
+		SM_resource.setBounds(383, 186, 114, 19);
+		Sala_Modificar.add(SM_resource);
+		SM_resource.setColumns(10);
+		
+		JButton SM_quitar = new JButton("Quitar");
+		
+		SM_quitar.setBounds(383, 254, 111, 25);
+		Sala_Modificar.add(SM_quitar);
+		
+		JScrollPane scrollPane_2 = new JScrollPane();
+		scrollPane_2.setBounds(12, 44, 184, 236);
+		Sala_Modificar.add(scrollPane_2);
+		
+		JTextArea SM_result = new JTextArea();
+		scrollPane_2.setViewportView(SM_result);
+		SM_result.setEditable(false);
+		SM_result.setText(" ");
 		
 		JPanel Sala_Consultar = new JPanel();
 		Cards.add(Sala_Consultar, "Sala_Consultar");
@@ -298,15 +482,18 @@ public class UI {
 		lblIdDeSala.setBounds(12, 17, 82, 15);
 		Sala_Consultar.add(lblIdDeSala);
 		
-		JTextPane SC_result = new JTextPane();
-		SC_result.setEditable(false);
-		SC_result.setBounds(12, 44, 482, 236);
-		Sala_Consultar.add(SC_result);
-		
 		JComboBox SC_id = new JComboBox(new String[] {""});
 		
 		SC_id.setBounds(112, 12, 91, 24);
 		Sala_Consultar.add(SC_id);
+		
+		JScrollPane scrollPane_3 = new JScrollPane();
+		scrollPane_3.setBounds(12, 44, 482, 236);
+		Sala_Consultar.add(scrollPane_3);
+		
+		JTextPane SC_result = new JTextPane();
+		scrollPane_3.setViewportView(SC_result);
+		SC_result.setEditable(false);
 		
 		JPanel Hora_Agregar = new JPanel();
 		Cards.add(Hora_Agregar, "Hora_Agregar");
@@ -386,6 +573,208 @@ public class UI {
 		btnCrear.setBounds(388, 255, 106, 25);
 		Hora_Agregar.add(btnCrear);
 		
+		JPanel Rese_Agregar = new JPanel();
+		Cards.add(Rese_Agregar, "Rese_Agregar");
+		Rese_Agregar.setLayout(null);
+		
+		JLabel lblDa_1 = new JLabel("Día:");
+		lblDa_1.setBounds(12, 12, 42, 15);
+		Rese_Agregar.add(lblDa_1);
+		
+		JLabel lblHora_2 = new JLabel("Tiempo en minutos:");
+		lblHora_2.setBounds(12, 39, 139, 15);
+		Rese_Agregar.add(lblHora_2);
+		
+		JSpinner RA_day = new JSpinner();
+		RA_day.setModel(new SpinnerDateModel(new Date(), null, null, Calendar.DAY_OF_WEEK_IN_MONTH));
+		RA_day.setBounds(80, 10, 156, 20);
+		Rese_Agregar.add(RA_day);
+		
+		JSpinner RA_time = new JSpinner();
+		RA_time.setModel(new SpinnerNumberModel(new Integer(1), null, null, new Integer(1)));
+		RA_time.setBounds(169, 37, 67, 20);
+		Rese_Agregar.add(RA_time);
+		
+		JLabel lblIntegrantes = new JLabel("Correos de los participantes:");
+		lblIntegrantes.setBounds(12, 114, 224, 15);
+		Rese_Agregar.add(lblIntegrantes);
+		
+		JButton button_2 = new JButton("-");
+		
+		button_2.setBounds(183, 255, 53, 25);
+		Rese_Agregar.add(button_2);
+		
+		RA_email = new JTextField();
+		RA_email.setBounds(12, 131, 159, 19);
+		Rese_Agregar.add(RA_email);
+		RA_email.setColumns(10);
+		
+		JButton button_3 = new JButton("+");
+		
+		button_3.setBounds(183, 128, 53, 25);
+		Rese_Agregar.add(button_3);
+		
+		JLabel lblCarnetDelEstudiante = new JLabel("Carnet:");
+		lblCarnetDelEstudiante.setBounds(12, 66, 67, 15);
+		Rese_Agregar.add(lblCarnetDelEstudiante);
+		
+		RA_idnumber = new JTextField();
+		
+		
+		RA_idnumber.setBounds(80, 64, 156, 19);
+		Rese_Agregar.add(RA_idnumber);
+		RA_idnumber.setColumns(10);
+		
+		JLabel lblStudentInfo = new JLabel("");
+		lblStudentInfo.setBounds(12, 87, 224, 15);
+		Rese_Agregar.add(lblStudentInfo);
+		
+		JLabel lblDescripcin = new JLabel("Descripción:");
+		lblDescripcin.setBounds(254, 12, 87, 15);
+		Rese_Agregar.add(lblDescripcin);
+		
+		JLabel lblReservando = new JLabel("Reservando:");
+		lblReservando.setBounds(254, 114, 99, 15);
+		Rese_Agregar.add(lblReservando);
+		
+		JTextPane RA_descrip = new JTextPane();
+		RA_descrip.setBounds(248, 39, 246, 42);
+		Rese_Agregar.add(RA_descrip);
+		
+		JLabel RA_roomId = new JLabel("");
+		RA_roomId.setBounds(377, 114, 117, 15);
+		Rese_Agregar.add(RA_roomId);
+		
+		JButton btnCambiar = new JButton("Cambiar");
+		
+		btnCambiar.setBounds(254, 157, 99, 25);
+		Rese_Agregar.add(btnCambiar);
+		
+		JButton btnReservar = new JButton("Reservar");
+		
+		btnReservar.setBounds(377, 157, 117, 25);
+		Rese_Agregar.add(btnReservar);
+		
+		JTextPane RA_result = new JTextPane();
+		RA_result.setEditable(false);
+		RA_result.setBackground(UIManager.getColor("Button.background"));
+		RA_result.setBounds(254, 194, 240, 42);
+		Rese_Agregar.add(RA_result);
+		
+		JScrollPane scrollPane_4 = new JScrollPane();
+		scrollPane_4.setBounds(12, 162, 159, 118);
+		Rese_Agregar.add(scrollPane_4);
+		
+		JList RA_emails = new JList();
+		scrollPane_4.setViewportView(RA_emails);
+		RA_emails.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		RA_emails.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		
+		JPanel Rese_Buscar = new JPanel();
+		Cards.add(Rese_Buscar, "Rese_Buscar");
+		Rese_Buscar.setLayout(null);
+		
+		JLabel lblBuscarSala = new JLabel("Buscar sala");
+		lblBuscarSala.setBounds(12, 12, 102, 15);
+		Rese_Buscar.add(lblBuscarSala);
+		
+		JLabel lblCapacidadMnima = new JLabel("Capacidad mínima:");
+		lblCapacidadMnima.setBounds(12, 28, 148, 15);
+		Rese_Buscar.add(lblCapacidadMnima);
+		
+		JComboBox RB_capacity = new JComboBox();
+		
+		RB_capacity.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"}));
+		RB_capacity.setBounds(22, 55, 55, 24);
+		Rese_Buscar.add(RB_capacity);
+		
+		JLabel lblNewLabel = new JLabel("Recursos requeridos:");
+		lblNewLabel.setBounds(12, 91, 170, 15);
+		Rese_Buscar.add(lblNewLabel);
+		
+		RB_resource = new JTextField();
+		RB_resource.setBounds(12, 118, 114, 19);
+		Rese_Buscar.add(RB_resource);
+		RB_resource.setColumns(10);
+		
+		JButton button = new JButton("+");
+		
+		button.setBounds(137, 115, 45, 25);
+		Rese_Buscar.add(button);
+		
+		JButton button_1 = new JButton("-");
+		
+		button_1.setBounds(137, 255, 45, 25);
+		Rese_Buscar.add(button_1);
+		
+		JLabel lblResultado = new JLabel("Resultado:");
+		lblResultado.setBounds(200, 12, 102, 15);
+		Rese_Buscar.add(lblResultado);
+		
+		JButton btnContinuar = new JButton("Continuar");
+		
+		btnContinuar.setBounds(283, 255, 211, 25);
+		Rese_Buscar.add(btnContinuar);
+		
+		JScrollPane scrollPane_5 = new JScrollPane();
+		scrollPane_5.setBounds(283, 12, 211, 231);
+		Rese_Buscar.add(scrollPane_5);
+		
+		JTextPane RB_result = new JTextPane();
+		scrollPane_5.setViewportView(RB_result);
+		
+		JScrollPane scrollPane_6 = new JScrollPane();
+		scrollPane_6.setBounds(200, 28, 83, 252);
+		Rese_Buscar.add(scrollPane_6);
+		
+		JList RB_rooms = new JList();
+		scrollPane_6.setViewportView(RB_rooms);
+		
+		RB_rooms.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		RB_rooms.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		
+		JScrollPane scrollPane_7 = new JScrollPane();
+		scrollPane_7.setBounds(12, 149, 114, 131);
+		Rese_Buscar.add(scrollPane_7);
+		
+		JList RB_resources = new JList();
+		scrollPane_7.setViewportView(RB_resources);
+		RB_resources.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		
+		JPanel Rese_Consultar = new JPanel();
+		Cards.add(Rese_Consultar, "Rese_Consultar");
+		Rese_Consultar.setLayout(null);
+		
+		JLabel lblReserva = new JLabel("Reserva:");
+		lblReserva.setBounds(12, 12, 70, 15);
+		Rese_Consultar.add(lblReserva);
+		
+		JComboBox RC_reservation = new JComboBox();
+		
+		RC_reservation.setBounds(100, 7, 89, 24);
+		Rese_Consultar.add(RC_reservation);
+		
+		JScrollPane scrollPane_8 = new JScrollPane();
+		scrollPane_8.setBounds(12, 39, 482, 241);
+		Rese_Consultar.add(scrollPane_8);
+		
+		JTextPane RC_result = new JTextPane();
+		RC_result.setEditable(false);
+		scrollPane_8.setViewportView(RC_result);
+		
+		JButton btnCancelar = new JButton("Cancelar");
+		
+		btnCancelar.setBounds(377, 7, 117, 25);
+		Rese_Consultar.add(btnCancelar);
+		
+		RB_rooms.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent arg0) {
+				RB_result.setText(Salas.getRoomInfo((String)RB_rooms.getSelectedValue()));
+			}
+		});
+		
+		new UtilDateModel();
+		
 		btnConsultar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				EC_result.setText(Estudiantes.consultStudent(EC_id.getText()) + Reservaciones.getStringFromStID(EC_id.getText()));
@@ -421,7 +810,6 @@ public class UI {
 		
 		mntmAgregar_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Horarios.tmpSchedule = new Horario();
 				HA_result.setText(Horarios.tmpSchedule.toString());
 				SA_result.setText(Horarios.getSchedule((String)SA_schedule.getItemAt(SA_schedule.getSelectedIndex())).toString());
 				clayout.show(Cards, "Hora_Agregar");
@@ -489,5 +877,206 @@ public class UI {
 				SA_result.setText(Horarios.getSchedule((String)SA_schedule.getItemAt(SA_schedule.getSelectedIndex())).toString());
 			}
 		});
+		
+		mntmModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				SM_room.setModel(new DefaultComboBoxModel(Salas.getRoomList()));
+				clayout.show(Cards, "Sala_Modificar");
+			}
+		});
+		
+		SM_room.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				SM_result.setText(Salas.getRoomInfo((String) SM_room.getItemAt(SM_room.getSelectedIndex())).toString());
+			}
+		});
+		
+		SM_changePlace.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Salas.changePlace((String) SM_room.getItemAt(SM_room.getSelectedIndex()), SM_place.getText());
+				SM_result.setText(Salas.getRoomInfo((String) SM_room.getItemAt(SM_room.getSelectedIndex())).toString());
+				
+			}
+		});
+		
+		SM_changeStatus.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Salas.changeStatus((String) SM_room.getItemAt(SM_room.getSelectedIndex()), SM_status.getSelectedIndex());
+				SM_result.setText(Salas.getRoomInfo((String) SM_room.getItemAt(SM_room.getSelectedIndex())).toString());
+			}
+		});
+		
+		SM_addResource.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Salas.addResource((String) SM_room.getItemAt(SM_room.getSelectedIndex()), SM_resource.getText());
+				SM_result.setText(Salas.getRoomInfo((String) SM_room.getItemAt(SM_room.getSelectedIndex())).toString());
+				SM_resources.setModel(new DefaultComboBoxModel(Salas.getResources((String) SM_room.getItemAt(SM_room.getSelectedIndex()))));
+				SM_resource.setText("");
+			}
+		});
+		
+		mntmNueva.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				clayout.show(Cards, "Rese_Buscar");
+			}
+		});
+		
+		SM_quitar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(!SM_resources.isSelectionEmpty()) {
+					Salas.removeResource((String) SM_room.getItemAt(SM_room.getSelectedIndex()),SM_resources.getSelectedIndex());
+				}
+				SM_result.setText(Salas.getRoomInfo((String) SM_room.getItemAt(SM_room.getSelectedIndex())).toString());
+				SM_resources.setModel(new DefaultComboBoxModel(Salas.getResources((String) SM_room.getItemAt(SM_room.getSelectedIndex()))));
+			
+			}
+		});
+		
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				searchtmpResources.add(RB_resource.getText());
+				tmpArray = new String[searchtmpResources.size()];
+				tmpArray = searchtmpResources.toArray(tmpArray);
+				RB_resource.setText("");
+				RB_resources.setModel(new DefaultComboBoxModel(tmpArray));
+				RB_rooms.setModel(new DefaultComboBoxModel(Salas.searchRoom(RB_capacity.getSelectedIndex() + 1, tmpArray)));
+			}
+		});
+		
+		button_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(!RB_resources.isSelectionEmpty()) {
+					searchtmpResources.remove(RB_resources.getSelectedIndex());
+					tmpArray = new String[searchtmpResources.size()];
+					tmpArray = searchtmpResources.toArray(tmpArray);
+					
+					RB_resources.setModel(new DefaultComboBoxModel(tmpArray));
+					RB_rooms.setModel(new DefaultComboBoxModel(Salas.searchRoom(RB_capacity.getSelectedIndex() + 1, tmpArray)));
+				}
+			}
+		});
+		
+		RB_capacity.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RB_rooms.setModel(new DefaultComboBoxModel(Salas.searchRoom(RB_capacity.getSelectedIndex(), tmpArray)));
+			}
+		});
+		btnContinuar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				clayout.show(Cards,"Rese_Agregar");
+				RA_roomId.setText((String)RB_rooms.getSelectedValue());
+			}
+		});
+		
+		button_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(RA_email.getText() != "") {
+					tmpEmails.add(RA_email.getText());
+					tmpArray = new String[tmpEmails.size()];
+					tmpArray = tmpEmails.toArray(tmpArray);
+					RA_emails.setModel(new DefaultComboBoxModel(tmpArray));
+					RA_email.setText("");
+				}
+			}
+		});
+		button_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(!RA_emails.isSelectionEmpty()) {
+					tmpEmails.remove(RA_emails.getSelectedIndex());
+					tmpArray = new String[tmpEmails.size()];
+					tmpArray = tmpEmails.toArray(tmpArray);
+					RA_emails.setModel(new DefaultComboBoxModel(tmpArray));
+				}
+			}
+		});
+		RA_idnumber.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent arg0) {
+				if(!Estudiantes.verifyStudentID(RA_idnumber.getText())) {
+					lblStudentInfo.setText(Estudiantes.getStudentInfo(RA_idnumber.getText(), Estudiantes.NAME));
+				} else {
+					lblStudentInfo.setText("Carnet no válido.");
+				}
+			}
+		});
+		
+		btnCambiar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				clayout.show(Cards, "Rese_Buscar");
+			}
+		});
+		
+		btnReservar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(!Estudiantes.verifyStudentID(RA_idnumber.getText())) {
+					if(((Date) RA_day.getValue()).getTime()  > date.getTime()) {
+						Hora tmpHour1 = new Hora(
+								((Date) RA_day.getValue()).getHours(),
+								((Date) RA_day.getValue()).getMinutes(),
+								((Date) RA_day.getValue()).getHours(),
+								((Date) RA_day.getValue()).getMinutes() + (int) RA_time.getValue());
+						if(tmpHour1.isInvalidTime()) {
+							RA_result.setText("Hora invalida.");
+						} else {
+							int tmpQuantity = RA_emails.getComponentCount() + 1;
+							GregorianCalendar tmpday = new GregorianCalendar();
+							tmpday.setTime((Date) RA_day.getValue());
+							RA_result.setText(Reservaciones.reserveRoom(Estudiantes.getStudent(RA_idnumber.getText()),Salas.getRoom(RA_roomId.getText()), tmpday, tmpHour1, RA_descrip.getText(), tmpQuantity));
+							if(RA_result.getText().equals("Sala reservada.")) {
+								String tmpMailMsg = Reservaciones.getLastReservationInfo();
+								Mail.sendMail(tmpMailMsg,"Nueva reserva.", Estudiantes.getStudent(RA_idnumber.getText()).getEmail());
+								for(String email: tmpEmails) {
+									Mail.sendMail(tmpMailMsg,"Invitación.", email);
+								}
+							}
+						}
+						
+					} else {
+						RA_result.setText("Fecha invalida.");
+					}
+				} else {
+					RA_result.setText("No se encuentra el estudiante.");
+				}
+			}
+		});
+		
+		mntmConsultar_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				clayout.show(Cards, "Rese_Consultar");
+				RC_reservation.setModel(new DefaultComboBoxModel(Reservaciones.getReservationsList()));
+			}
+		});
+		
+		RC_reservation.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RC_result.setText(Reservaciones.getReservation((String)RC_reservation.getSelectedItem()));
+			}
+		});
+		
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if((Reservaciones.getReservation(Integer.parseInt((String)RC_reservation.getSelectedItem())).getDate().getTimeInMillis() - 3600000) > date.getTime()) {
+					Reservaciones.getReservation(Integer.parseInt((String)RC_reservation.getSelectedItem())).cancelReservation();
+					RC_result.setText(Reservaciones.getReservation((String)RC_reservation.getSelectedItem()));
+				}
+					
+			}
+		});
+		
+		
+		
+		ActionListener updateClockAction = new ActionListener() {
+			  public void actionPerformed(ActionEvent e) {
+				  date = new Date();
+			      lblHora.setText(new SimpleDateFormat("EEE,d MMM yyyy HH:mm:ss").format(date));
+			      if(lastWeek != new GregorianCalendar().get(GregorianCalendar.WEEK_OF_YEAR)) {
+			    	  lastWeek = lastWeek = new GregorianCalendar().get(GregorianCalendar.WEEK_OF_YEAR);
+			    	  
+			      }
+			  }
+		};
+		Timer t = new Timer(1000, updateClockAction);
+		t.start();
 	}
 }

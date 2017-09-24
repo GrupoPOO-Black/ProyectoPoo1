@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import datos.Horario;
-import datos.Reserva;
 import filemanager.Filemanager;
 
 class Horarios {

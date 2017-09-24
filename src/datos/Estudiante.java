@@ -14,7 +14,7 @@ public class Estudiante implements Serializable{
 	private String phoneNumber;
 	
 	private List<String> incidents = new ArrayList<String>();
-	private int weekrReservations;
+	private int weekReservations;
 	private int score;
 	
 	//constructor
@@ -25,7 +25,7 @@ public class Estudiante implements Serializable{
 		email = pEmail;
 		score = pScore;
 		phoneNumber = pPhoneNumber;
-		weekrReservations = 0;
+		weekReservations = 0;
 	}
 	
 	public Estudiante(String pName, String pIdNumber, String pCareer, String pEmail, int pScore, String pPhoneNumber,int pWeekrReservations) {
@@ -35,7 +35,7 @@ public class Estudiante implements Serializable{
 		email = pEmail;
 		score = pScore;
 		phoneNumber = pPhoneNumber;
-		weekrReservations = pWeekrReservations;
+		weekReservations = pWeekrReservations;
 	}
 	
 	
@@ -79,17 +79,21 @@ public class Estudiante implements Serializable{
 		}
 	}
 	
+	public void reservationCanceled() {
+		score--;
+	}
+	
 	public List<String> getIncidents(){
 		
 		return incidents;
 	}
 	
 	public void addWeekReservations() {
-		weekrReservations++;
+		weekReservations++;
 	}
 	
 	public int getWeekReservations() {
-		return weekrReservations;
+		return weekReservations;
 	}
 	
 	public String getName() {
@@ -138,6 +142,10 @@ public class Estudiante implements Serializable{
 
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
+	}
+
+	public void resetWeekReservations() {
+		weekReservations = 0;
 	}
 	
 	

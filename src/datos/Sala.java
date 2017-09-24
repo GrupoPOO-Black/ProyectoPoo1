@@ -18,7 +18,7 @@ public class Sala implements Serializable{
 	public final static int MAINTENACE = 1;
 	public final static int ACTIVE = 2;
 	
-	private static int cSalas = 001;
+	private static int cSalas = 1;
 	private String id = "SAL-";
 	private int capacity;
 	private String place;
@@ -33,6 +33,12 @@ public class Sala implements Serializable{
 	}
 	
 	public Sala(int pcapacity, int pstatus,Horario pSchedule,String pPlace){
+		if(cSalas < 10) {
+			id += "0";
+		}
+		if(cSalas < 100) {
+			id += "0";
+		}
 		id = id + cSalas;
 		cSalas++;
 		capacity = pcapacity;
@@ -42,6 +48,12 @@ public class Sala implements Serializable{
 	}
 	
 	public Sala(int pcapacity,Horario pSchedule,String pPlace){
+		if(cSalas < 10) {
+			id += "0";
+		}
+		if(cSalas < 100) {
+			id += "0";
+		}
 		id = id + cSalas;
 		cSalas++;
 		capacity = pcapacity;
@@ -49,16 +61,32 @@ public class Sala implements Serializable{
 		place = pPlace;
 	}
 	
-	public void addresource(String resource) {
-		resources.add(resource);
+	public void addResource(String pResources) {
+		resources.add(pResources);
 	}
 	
-	public void removeResource(int rIndex) {
-		resources.remove(rIndex);
+	public void removeResource(int pIndex) {
+		resources.remove(pIndex);
+	}
+	public String getResource(int index) {
+		return resources.get(index);
 	}
 	
-	public ArrayList<String> getResources() {
-		return resources;
+	public boolean hasResource(String pResource) {
+		for(int i = 0; i < resources.size();i++) {
+			if(resources.get(i).equals(pResource)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public String[] getResources() {
+		String[] resourcelist = new String[resources.size()];
+		for(int i = 0; i < resources.size();i++) {
+			resourcelist[i] = resources.get(i);
+		}
+		return resourcelist;
 	}
 	
 	public String getPlace() {
@@ -99,7 +127,13 @@ public class Sala implements Serializable{
 		}
 		
 	}
-
+	
+	public String getInfo(){
+		String msg = id;
+		msg += "\nUbicación: " + place + "\n";
+		return msg;
+	}
+	
 	public String toString(){
 		String msg = id + "\n Capacidad: " + capacity + "\n Estado: ";
 		switch(status){
@@ -112,6 +146,15 @@ public class Sala implements Serializable{
 		case MAINTENACE:
 			msg += "En mantenimiento";
 			break;
+		}
+		msg += "\nUbicación: " + place;
+		msg += "\nRecursos: \n";
+		if(resources.size() < 1) {
+			msg += "    Vacio.\n";
+		} else {
+			for(int i = 0;i < resources.size();i++) {
+				msg += "    " + resources.get(i) + "\n";
+			}
 		}
 		return(msg + "\n" + schedule.toString());
 	}
