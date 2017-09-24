@@ -75,8 +75,27 @@ class Estudiantes {
 		return null;
 	}
 	
-	public static void save() {
-		Filemanager.save(students, "EstudiantesDB.db");
+	public static void resetWeekReservations() {
+		for(Estudiante student: students) {
+			student.resetWeekReservations();
+		}
+	}
+	
+
+	public static String consultStudent(String id) {
+		for(int i = 0;i < students.size();i++) {
+			if(students.get(i).getIdNumber().equals(id)) {
+				return students.get(i).showInfo();
+			}
+		}
+		
+		return "No hay ningún estudiante registrado con ese carnet.";
+	}
+	
+	public static void printAll() {
+		for(int i = 0;i < students.size();i++) {
+			System.out.println(students.get(i).toString());
+		}
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -84,68 +103,9 @@ class Estudiantes {
 		students = (List<Estudiante>) Filemanager.load("EstudiantesDB.db");
 	}
 	
-	public static void resetWeekReservations() {
-		for(Estudiante student: students) {
-			student.resetWeekReservations();
-		}
-	}
-	
-	public static void importStudents() {
-		try {
-			System.out.println("Importando estudiantes...");
-			
-			File inputFile = new File("EstudiantesDB.xml");
-			
-			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-			Document doc = dBuilder.parse(inputFile);
-			doc.getDocumentElement().normalize();
-			NodeList nList = doc.getElementsByTagName("student");
-			
-			
-			for (int temp = 0; temp < nList.getLength(); temp++) {
-				Node nNode = nList.item(temp);
-				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-					try {
-						Element eElement = (Element) nNode;
-						eElement.getElementsByTagName("name").item(0).getTextContent();						   
-						if(verifyStudentID(eElement.getAttribute("id"))) {
-							System.out.println("Se agrega estudiante. " + eElement.getAttribute("id"));
-							students.add(new Estudiante(
-									eElement.getElementsByTagName("name").item(0).getTextContent(),
-									eElement.getAttribute("id"), 
-									eElement.getElementsByTagName("career").item(0).getTextContent(), 
-									eElement.getElementsByTagName("email").item(0).getTextContent(), 
-									Integer.parseInt(eElement.getElementsByTagName("score").item(0).getTextContent()), 
-									eElement.getElementsByTagName("phone").item(0).getTextContent(), 
-									Integer.parseInt(eElement.getElementsByTagName("wReservations").item(0).getTextContent())));
-						}
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-					   }
-				}
-			
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public static String consultStudent(String id) {
-		for(int i = 0;i < students.size();i++) {
-			if(students.get(i).getIdNumber().equals(id)) {
-				return students.get(i).toString();
-			}
-		}
-		
-		return "No hay ningún estudiante registrado con ese carnet.";
+	public static void save() {
+		Filemanager.save(students, "EstudiantesDB.db");
 	}
 	
 	
-	public static void printAll() {
-		for(int i = 0;i < students.size();i++) {
-			System.out.println(students.get(i).toString());
-		}
-	}
 }

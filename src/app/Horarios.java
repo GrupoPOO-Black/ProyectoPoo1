@@ -39,11 +39,11 @@ class Horarios {
 	}
 	
 	public static void save() {
-		Filemanager.save(schedules, "Horarios.db");
+		Filemanager.save(schedules, "Horarios.xml");
 	}
 	
 	public static void load() throws ClassNotFoundException, IOException {
-		Filemanager.load("Horarios.db");
+		Filemanager.load("Horarios.xml");
 	}
-
+	
 }

@@ -122,12 +122,12 @@ class Salas {
 		return new String[0];
 	}
 	
-	public static void save() {
-		Filemanager.save(rooms, "Salas.db");
-	}
-	
 	@SuppressWarnings("unchecked")
 	public static void load() throws ClassNotFoundException, IOException {
-		rooms = (List<Sala>) Filemanager.load("Salas.db");
+		rooms = (List<Sala>) Filemanager.load("Salas.xml");
+	}
+	
+	public static void save() {
+		Filemanager.save(rooms, "Salas.xml");
 	}
 }

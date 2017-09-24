@@ -2,8 +2,6 @@ package app;
 import mailing.Mail;
 import java.util.List;
 
-import org.joda.time.DateTime;
-
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;

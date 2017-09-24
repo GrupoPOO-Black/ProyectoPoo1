@@ -1,10 +1,14 @@
 package app;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import org.jfree.data.general.DefaultPieDataset;
+
 import datos.*;
+import filemanager.Filemanager;
 public class Reservaciones {
 	static List<Reserva> reservations = new ArrayList<Reserva>();
 	
@@ -41,7 +45,10 @@ public class Reservaciones {
 					if(reservations.get(i).getDate().get(GregorianCalendar.MONTH) == pDate.get(GregorianCalendar.MONTH)) {
 						if(reservations.get(i).getDate().get(GregorianCalendar.YEAR) == pDate.get(GregorianCalendar.YEAR)) {
 							if(reservations.get(i).getHour().compareHours(pHour)){
-								return "La sala está reservada a la hora indicada.";
+								if(!reservations.get(i).isCanceled()) {
+									return "La sala está reservada a la hora indicada.";
+								}
+								
 							}
 						}
 					}
@@ -105,6 +112,55 @@ public class Reservaciones {
 		return roomList;
 	}
 	
+	static DefaultPieDataset getTopCareers() {
+		DefaultPieDataset data = new DefaultPieDataset();
+		
+		ArrayList<DataCounter> top = new ArrayList<DataCounter>();
+		
+		for(int i = 0; i < reservations.size();i++){
+			 
+			boolean eFlag = false;
+			
+			for(int i2 = 0; i2 < top.size();i2++) {
+				if(top.get(i2).getName().equals(reservations.get(i).getStudent().getCareer())) {
+					top.get(i2).incValue();
+					eFlag = true;
+					break;
+				}
+			}
+			
+			if(!eFlag) {
+				top.add(new DataCounter(reservations.get(i).getStudent().getCareer(),1));
+			}
+			
+		}
+		ArrayList<DataCounter> tmptop = new ArrayList<DataCounter>();
+		
+		
+		for(int i2 = 0; i2 < top.size();i2++) {
+			if(tmptop.size() == 0) {
+				tmptop.add(top.get(i2));
+			}
+			for(int i = 0; i < tmptop.size();i++) {
+				System.out.println("Ciclo!!!");
+				if(tmptop.get(i).getValue() < top.get(i2).getValue()) {
+					tmptop.add(i, top.get(i2));
+					break;
+				} else {
+					if(i == tmptop.size() - 1) {
+						tmptop.add(top.get(i2));
+					}
+				}
+			}
+		}
+		
+		for(int i = 0; i < tmptop.size() && i < 5;i++) {
+			data.setValue(tmptop.get(i).getName(), tmptop.get(i).getValue());
+		}
+		
+		return data;
+	}
+	
 	static String getStringFromRmID(String pID) { 
 		if(quantity() > 0) {
 			boolean rflag = false;
@@ -129,11 +185,12 @@ public class Reservaciones {
 		return reservations.size();
 	}
 	
-	static void load() {
-		try {
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	@SuppressWarnings("unchecked")
+	static void load() throws ClassNotFoundException, IOException {
+		reservations = (ArrayList<Reserva>) Filemanager.load("Reservaciones.xml");
+	}
+	
+	static void save() {
+		Filemanager.save(reservations, "Reservaciones.xml");
 	}
 }

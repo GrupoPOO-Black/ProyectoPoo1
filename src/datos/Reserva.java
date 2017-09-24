@@ -55,6 +55,10 @@ public class Reserva implements Serializable {
 		canceled = true;
 		student.reservationCanceled();
 	}
+	
+	public boolean isCanceled() {
+		return canceled;
+	}
 
 	public String getSubject() {
 		return subject;
