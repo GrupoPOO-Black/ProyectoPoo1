@@ -8,15 +8,19 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-
+/**
+ * Clase utilizada para enviar correos.
+ * @author Kenneth, Caleb, Lery
+ *
+ */
 public class Mail
 {
     /**
-     * 
-     * @param Msg
-     * @param subject
-     * @param to
-     * @return
+     * Envia un correo con una Mensaje, Asunto y Destinatario indicado.
+     * @param msg - Cuerpo del correo.
+     * @param subject - Asunto.
+     * @param to - Destinatario.
+     * @return true si se pudo enviar.
      */
     public static boolean sendMail(String msg,String subject,String to){
     	try {

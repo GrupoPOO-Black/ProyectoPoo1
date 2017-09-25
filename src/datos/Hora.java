@@ -3,13 +3,20 @@ package datos;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
+/**
+ * Clase hora
+ * @author Kenneth, Caleb, Lery
+ *
+ */
 public class Hora implements Serializable {
 	private Date openTime = new Date();
 	private Date closeTime = new Date();
 	private boolean invalidTime = false;
 	
 	@SuppressWarnings("deprecation")
+	/**
+	 * Constructor por defecto de la clase Hora de 7:30 a.m. a 19:30 p.m.
+	 */
 	public Hora(){
 		this.openTime.setHours(7); 
 		this.openTime.setMinutes(30); 
@@ -18,6 +25,13 @@ public class Hora implements Serializable {
 	}
 
 @SuppressWarnings("deprecation")
+/**
+ * Constructor con parametros para la clase hora.
+ * @param pOpentimeH - Hora de apertura, Hora.
+ * @param pOpentimeM - Hora de apertura, Minutos.
+ * @param pClosetimeH - Hora de cierre, Hora.
+ * @param pClosetimeM - Hora de cierre, Minutos.
+ */
 public Hora(int pOpentimeH, int pOpentimeM,int pClosetimeH, int pClosetimeM){
 	this.openTime.setHours(pOpentimeH); 
 	this.openTime.setMinutes(pOpentimeM); 
@@ -37,6 +51,11 @@ public Hora(int pOpentimeH, int pOpentimeM,int pClosetimeH, int pClosetimeM){
 	
 	
 	@SuppressWarnings("deprecation")
+	/**
+	 * Compara si dos hora chocan.
+	 * @param pHour - Hora con cual comparar.
+	 * @return true si chocan.
+	 */
 	public boolean compareHours(Hora pHour) {
 		
 		int opentime1 = (openTime.getHours() * 100) + openTime.getMinutes();
@@ -67,6 +86,11 @@ public Hora(int pOpentimeH, int pOpentimeM,int pClosetimeH, int pClosetimeM){
 		return false;
 	}
 	
+	/**
+	 * Verifica si una hora se encuentra en el rango de otra.
+	 * @param pHour - Hora a verificar si se encuentra en el rango.
+	 * @return true si se encuentra en el rango.
+	 */
 	public boolean validHour(Hora pHour) {
 		
 		int opentime1 = (openTime.getHours() * 100) + openTime.getMinutes();
@@ -83,7 +107,7 @@ public Hora(int pOpentimeH, int pOpentimeM,int pClosetimeH, int pClosetimeM){
 	}
 	
 	
-	
+	//GETTERS & SETTERS
 	public boolean isInvalidTime() {
 		return invalidTime;
 	}

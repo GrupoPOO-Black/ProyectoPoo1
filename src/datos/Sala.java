@@ -4,10 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * 
- * 
- * 
- * @author Kenneth Herrera, Caleb Saenz, Lery Sanchez 
+ * Clase sala.
+ * @author Kenneth, Caleb, Lery
  *
  */
 
@@ -29,9 +27,13 @@ public class Sala implements Serializable{
 	
 	private Horario schedule;
 	
-	public Sala(){
-	}
-	
+	/**
+	 * Constructor de la clase sala el cuál permite establecer el estado de la misma.
+	 * @param pcapacity - Capacidad de la sala.
+	 * @param pstatus - Estado de la sala.
+	 * @param pSchedule - Horario de la sala.
+	 * @param pPlace - Lugar de la sala.
+	 */
 	public Sala(int pcapacity, int pstatus,Horario pSchedule,String pPlace){
 		if(cSalas < 10) {
 			id += "0";
@@ -46,7 +48,12 @@ public class Sala implements Serializable{
 		schedule = pSchedule;
 		place = pPlace;
 	}
-	
+	/**
+	 * Constructor de la clase sala.
+	 * @param pcapacity - Capacidad de la sala.
+	 * @param pSchedule - Horario de la sala.
+	 * @param pPlace - Lugar de la sala.
+	 */
 	public Sala(int pcapacity,Horario pSchedule,String pPlace){
 		if(cSalas < 10) {
 			id += "0";
@@ -60,18 +67,26 @@ public class Sala implements Serializable{
 		schedule = pSchedule;
 		place = pPlace;
 	}
-	
+	/**
+	 * Agrega un recurso a la sala.
+	 * @param pResources
+	 */
 	public void addResource(String pResources) {
 		resources.add(pResources);
 	}
-	
+	/**
+	 * Quita un recurso de la sala.
+	 * @param pIndex
+	 */
 	public void removeResource(int pIndex) {
 		resources.remove(pIndex);
 	}
-	public String getResource(int index) {
-		return resources.get(index);
-	}
 	
+	/**
+	 * Verifica que la sala tenga un recurso en específico.
+	 * @param pResource - Recurso.
+	 * @return true o false si tiene o no cierto recurso.
+	 */
 	public boolean hasResource(String pResource) {
 		for(int i = 0; i < resources.size();i++) {
 			if(resources.get(i).equals(pResource)) {
@@ -79,6 +94,11 @@ public class Sala implements Serializable{
 			}
 		}
 		return false;
+	}
+	
+	//GETTERS & SETTERS
+	public String getResource(int index) {
+		return resources.get(index);
 	}
 	
 	public String[] getResources() {
@@ -125,13 +145,16 @@ public class Sala implements Serializable{
 		if(pStatus >=0 && pStatus <= 2) {
 			status = pStatus;	
 		}
-		
 	}
 	
 	public String getInfo(){
 		String msg = id;
 		msg += "\nUbicación: " + place + "\n";
 		return msg;
+	}
+	
+	public static void setCount(int count) {
+		cSalas = count;
 	}
 	
 	public String toString(){

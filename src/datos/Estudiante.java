@@ -4,6 +4,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Clase estudiante.
+ * @author Kenneth, Caleb, Lery
+ *
+ */
 public class Estudiante implements Serializable{
 	
 	private String idNumber;
@@ -17,7 +22,15 @@ public class Estudiante implements Serializable{
 	private int weekReservations;
 	private int score;
 	
-	//constructor
+	/**
+	 * Contructor de la clase Estudiante.
+	 * @param pName - Nombre del estudiante.
+	 * @param pIdNumber - Carnet del estudiante.
+	 * @param pCareer - Carrera del estudiante.
+	 * @param pEmail - Email del estudiante.
+	 * @param pScore - Puntuación del estudiante.
+	 * @param pPhoneNumber - Número de teléfono.
+	 */
 	public Estudiante(String pName, String pIdNumber, String pCareer, String pEmail, int pScore, String pPhoneNumber) {
 		name = pName;
 		idNumber = pIdNumber;
@@ -27,32 +40,10 @@ public class Estudiante implements Serializable{
 		phoneNumber = pPhoneNumber;
 		weekReservations = 0;
 	}
-	
-	public Estudiante(String pName, String pIdNumber, String pCareer, String pEmail, int pScore, String pPhoneNumber,int pWeekrReservations) {
-		name = pName;
-		idNumber = pIdNumber;
-		career = pCareer;
-		email = pEmail;
-		score = pScore;
-		phoneNumber = pPhoneNumber;
-		weekReservations = pWeekrReservations;
-	}
-	
-	
-	
-	
-
-	@Override
-	public String toString() {
-		String msg = "Nombre: " + name;
-		msg += "\nCarnet: " + idNumber;
-		msg += "\nCarrera: " + career;
-		msg += "\nEmail: " + email;
-		msg += "\nNumero de telefono: " + phoneNumber;
-		msg += "\nPuntuacion: " + score + "\n";
-		return msg;
-	}
-	
+	/**
+	 * Muestra la información del estudiante.
+	 * @return String info.
+	 */
 	public String showInfo() {
 		String msg = "Nombre: " + name;
 		msg += "\nCarnet: " + idNumber;
@@ -68,6 +59,17 @@ public class Estudiante implements Serializable{
 		}
 		return msg;
 	}
+	@Override
+	public String toString() {
+		String msg = "Nombre: " + name;
+		msg += "\nCarnet: " + idNumber;
+		msg += "\nCarrera: " + career;
+		msg += "\nEmail: " + email;
+		msg += "\nNumero de telefono: " + phoneNumber;
+		msg += "\nPuntuacion: " + score + "\n";
+		return msg;
+	}
+	
 	
 	//getters & setters
 	public void addIncident(String pIncident, int penalization) {
@@ -147,10 +149,4 @@ public class Estudiante implements Serializable{
 	public void resetWeekReservations() {
 		weekReservations = 0;
 	}
-	
-	
-	
-	
-	
-
 }

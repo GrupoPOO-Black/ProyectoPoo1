@@ -1,17 +1,33 @@
 package app;
 import java.io.IOException;
+
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-
 import org.jfree.data.general.DefaultPieDataset;
 
 import datos.*;
 import filemanager.Filemanager;
+
+/**
+ * Administra y almacena todos las reservaciones.
+ * @author Kenneth, Caleb, Lery
+ *
+ */
 public class Reservaciones {
 	static List<Reserva> reservations = new ArrayList<Reserva>();
 	
+	
+	/**
+	 * Verifica una reserva a ser agregada, retorna como String el resultado.
+	 * @param pStudent - Estudiante que realiza la reserva.
+	 * @param pRoom - Sala a reservar.
+	 * @param pDate - Fecha de la reserva.
+	 * @param pHour - Hora de la reserva.
+	 * @param pDetail - Detalle de la reserva.
+	 * @param pPeople - Cantidad de personas.
+	 * @return Resultado.
+	 */
 	static String reserveRoom(Estudiante pStudent,Sala pRoom,GregorianCalendar pDate,Hora pHour,String pDetail, int pPeople) {
 		
 		if(!pRoom.getSchedule().getOpened()[pDate.get(GregorianCalendar.DAY_OF_WEEK) - 1]) {
@@ -62,7 +78,11 @@ public class Reservaciones {
 		reservations.add(new Reserva(pStudent, pRoom, pDate, pHour, pDetail,pPeople));
 		return "Sala reservada.";
 	}
-	
+	/**
+	 * Retorna una reserva según el índice en el que se ubica.
+	 * @param index - Índice
+	 * @return Reserva.
+	 */
 	static Reserva getReservation(int index) {
 		try {
 			return reservations.get(index);
@@ -71,7 +91,11 @@ public class Reservaciones {
 		}
 		
 	}
-	
+	/**
+	 * Retorna como String la información de una reserva según su ID.
+	 * @param id - Id de la reserva.
+	 * @return Info de la reservación.
+	 */
 	static String getReservation(String id) {
 		for(int i = 0; i < reservations.size();i++) {
 			if(id.equals("" + reservations.get(i).getReserveID())) {
@@ -80,7 +104,11 @@ public class Reservaciones {
 		}
 		return null;
 	}
-	
+	/**
+	 * Retorna como String TODAS las reservas realizadas por un estudiante en específico según su carnet.
+	 * @param pID - Carnet del estudiante.
+	 * @return Reservas realizadas por el estudiante como un String.
+	 */
 	static String getStringFromStID(String pID) {
 		if(quantity() > 0) {
 			boolean rflag = false;
@@ -100,10 +128,17 @@ public class Reservaciones {
 		}
 		
 	}
+	/**
+	 * Retorna la última reserva.
+	 * @return Info de la última reserva.
+	 */
 	static String getLastReservationInfo() {
 		return getReservation(reservations.size() - 1).toString();
 	}
-	
+	/**
+	 * Retorna todas las reservas como un String[].
+	 * @return String[] con la lista de reservaciones.
+	 */
 	static String[] getReservationsList() {
 		String[] roomList = new String[reservations.size()];
 		for(int i = 0; i < reservations.size();i++) {
@@ -112,6 +147,10 @@ public class Reservaciones {
 		return roomList;
 	}
 	
+	/**
+	 * Retorna un módelo estadístico para ser mostrado en la interfaz.
+	 * @return DefaultPieDataset
+	 */
 	static DefaultPieDataset getTopCareers() {
 		ArrayList<DataCounter> top = new ArrayList<DataCounter>();
 		
@@ -130,23 +169,30 @@ public class Reservaciones {
 				}
 			}
 		}
+		
 		ArrayList<DataCounter> tmptop = new ArrayList<DataCounter>();
 		
 		for(int i2 = 0; i2 < top.size();i2++) {
+			
 			if(tmptop.isEmpty()) {
 				tmptop.add(top.get(i2));
 			} else
+				
+				
 			for(int i = 0; i < tmptop.size();i++) {
 				System.out.println("Ciclo!!!");
-				if(tmptop.get(i).getValue() < top.get(i2).getValue()) {
+				
+				if(i + 1 == tmptop.size()) {
+					tmptop.add(top.get(i2));
+					break;
+					
+				} else if(tmptop.get(i).getValue() < top.get(i2).getValue()) {
 					tmptop.add(i, top.get(i2));
 					break;
-				} else {
-					if(i + 1 == tmptop.size()) {
-						tmptop.add(top.get(i2));
-					}
 				}
 			}
+			
+			
 		}
 		
 		DefaultPieDataset data = new DefaultPieDataset();
@@ -157,7 +203,11 @@ public class Reservaciones {
 		
 		return data;
 	}
-	
+	/**
+	 * Retorna todas las reservas de una Sala según su ID.
+	 * @param pID - ID de la sala.
+	 * @return Info de la reservación.
+	 */
 	static String getStringFromRmID(String pID) { 
 		if(quantity() > 0) {
 			boolean rflag = false;
@@ -177,16 +227,31 @@ public class Reservaciones {
 		}
 		
 	}
-	
+	/**
+	 * Retorna la cantidad de reservas.
+	 * @return Cantidad de reservas.
+	 */
 	static int quantity() {
 		return reservations.size();
 	}
 	
+	/**
+	 * Carga toda la información de las reservas.
+	 * @throws ClassNotFoundException
+	 * @throws IOException
+	 */
 	@SuppressWarnings("unchecked")
 	static void load() throws ClassNotFoundException, IOException {
-		reservations = (ArrayList<Reserva>) Filemanager.load("Reservaciones.xml");
+		try {
+			reservations = (ArrayList<Reserva>) Filemanager.load("Reservaciones.xml");
+			Reserva.setCount(reservations.size() - 1);
+		} catch(Exception e) {
+			reservations = new ArrayList<Reserva>();
+		}
 	}
-	
+	/**
+	 * Guarda toda la información de las reservas.
+	 */
 	static void save() {
 		Filemanager.save(reservations, "Reservaciones.xml");
 	}

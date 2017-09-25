@@ -3,7 +3,11 @@ package datos;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
+/**
+ * Clase reserva.
+ * @author Kenneth, Caleb, Lery
+ *
+ */
 public class Reserva implements Serializable {
 	private static int reservations = 0;
 	private int reserveID;
@@ -16,7 +20,15 @@ public class Reserva implements Serializable {
 	
 	private boolean canceled = false;
 	
-	
+	/**
+	 * Crea una reserva.
+	 * @param pStudent - Estudiante a cargo de la reserva.
+	 * @param pRoom - Sala cual será reservada.
+	 * @param pDate - Fecha de la reserva.
+	 * @param pHour - Hora de la reserva.
+	 * @param pSubject - Asunto de la reserva. 
+	 * @param pPeople - Cantidad de personas.
+	 */
 	public Reserva(Estudiante pStudent,Sala pRoom,GregorianCalendar pDate,Hora pHour,String pSubject,int pPeople){
 		reserveID = ++reservations;
 		student = pStudent;
@@ -27,6 +39,16 @@ public class Reserva implements Serializable {
 		people = pPeople;
 	}
 	
+	/**
+	 * Cancela una reserva, y se llama a la función en estudiantes que lo penaliza.
+	 */
+	public void cancelReservation() {
+		canceled = true;
+		student.reservationCanceled();
+	}
+	
+	
+	//GETTERS & SETTERS
 	public int getReserveID() {
 		return reserveID;
 	}
@@ -39,21 +61,12 @@ public class Reserva implements Serializable {
 		return room;
 	}
 
-
-
 	public GregorianCalendar getDate() {
 		return date;
 	}
 
-
-
 	public Hora getHour() {
 		return hour;
-	}
-	
-	public void cancelReservation() {
-		canceled = true;
-		student.reservationCanceled();
 	}
 	
 	public boolean isCanceled() {
@@ -66,6 +79,10 @@ public class Reserva implements Serializable {
 	
 	public int getPeople() {
 		return people;
+	}
+	
+	public static void setCount(int count) {
+		reservations = count;
 	}
 
 	public String toString() {

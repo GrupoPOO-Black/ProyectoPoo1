@@ -1,57 +1,36 @@
 package app;
-import mailing.Mail;
-import java.util.List;
-
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.io.IOException;
-import java.util.ArrayList;
 
-import datos.*;
-
-
-@SuppressWarnings("unchecked")
 /**
  * 
- * 
- * 
- * @author keneth
+ * @author Kenneth, Caleb, Lery
  *
  */
 public class AdminSalas {
-	
+	/**
+	 * Método Main, inicialización del programa.
+	 * @param args
+	 * @throws Exception
+	 */
 	public static void main(String[] args) throws Exception {
-		//loadData();
+		
+		loadData();
 		UI.init();
-		/*
-		Horario horario = new Horario();
-		horario.setSchedule(1);
-		horario.setSchedule(2);
-		horario.setSchedule(3);
-		horario.setSchedule(4);
-		horario.setSchedule(5);
-		horario.setSchedule(6);
-		Horarios.addSchedule(horario);
-		*/
-		//Inicilization
 		
-		
-	    //--
-		//Estudiantes.addStudent("Kenneth Herrera Valverde", "2016094891", "Ing. Computación", "kfhv.24@gmail.com", "89657436");
-	}
-	
-	static void importData() {
 		
 	}
-	
+	/**
+	 * Guarda todos los datos de la aplicación
+	 */
 	static void saveData(){
 		Estudiantes.save();
 		Horarios.save();
 		Salas.save();
 		Reservaciones.save();
 	}
-	
+	/**
+	 * Lee todos los datos de la aplicación
+	 */
 	static void loadData() throws ClassNotFoundException, IOException {
 		Estudiantes.load();
 		Salas.load();
@@ -59,14 +38,4 @@ public class AdminSalas {
 		Reservaciones.load();
 		
 	}
-	
-	static void verifyData() {
-		
-	}
-	
-	
-	
-	
-	
-	
 }

@@ -3,7 +3,7 @@ import java.io.Serializable;
 import java.util.*;
 /**
  * Horario de una Sala
- * @author Kenneth
+ * @author Kenneth, Caleb, Lery
  *
  */
 @SuppressWarnings("serial")
@@ -24,7 +24,9 @@ public class Horario implements Serializable {
 	private boolean[] opened = new boolean[7];
 	private List<Hora> hours = new ArrayList<Hora>();
 	
-	
+	/**
+	 * Constructor sin parametros de la clase Horarios, por defecto sin días habilitados.
+	 */
 	public Horario(){
 		id = id + ids;
 		ids++;
@@ -36,10 +38,10 @@ public class Horario implements Serializable {
 	
 	/**
 	 * 
-	 * Establece la hora de disponibilidad de un dia especifico
+	 * Establece la hora de disponibilidad de un dia especifico a una hora específica.
 	 * 
-	 * @param pDay
-	 * @param pHour
+	 * @param pDay - Día a verificar 0-6.
+	 * @param pHour - Hora a verificar.
 	 */
 	public void setSchedule(int pDay, Hora pHour) {
 		if(validDay(pDay)) {
@@ -49,6 +51,7 @@ public class Horario implements Serializable {
 	}
 	
 	
+	//GETTERS & SETTERS
 	public String getId() {
 		return id;
 	}
@@ -66,24 +69,20 @@ public class Horario implements Serializable {
 			opened[pDay] = true;
 		}
 	}
-	/**
-	 * Se quita la disponibilidad de un dia especifico
-	 * @param pDay
-	 */
-	
 	public void closeDay(int pDay) {
 		if(validDay(pDay)) {
 			opened[pDay] = false;
 		}
 	}
-	
 	private boolean validDay(int pDay) {
 		if(pDay >= 0 && pDay <= 6) {
 			return true;
 		}
 		return false;
 	}
-	
+	public static void setCount(int count) {
+		ids = count;
+	}
 	public String toString(){
 		String msg = "Horario ID: " + id + " \n";
 		for(int i = 0; i < 7;i++){

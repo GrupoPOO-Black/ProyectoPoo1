@@ -178,7 +178,7 @@ public class UI {
 		frmAdministracinDeSalas.setType(Type.UTILITY);
 		frmAdministracinDeSalas.setTitle("Administración de salas");
 		frmAdministracinDeSalas.setResizable(false);
-		frmAdministracinDeSalas.setBounds(100, 100, 550, 210);
+		frmAdministracinDeSalas.setBounds(100, 100, 550, 230);
 		frmAdministracinDeSalas.setLocationRelativeTo(null);
 		frmAdministracinDeSalas.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
@@ -244,6 +244,7 @@ public class UI {
 		mnAnlisisDeDatos.add(mntmNewMenuItem);
 		
 		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Carreras Top 5");
+		
 		mnAnlisisDeDatos.add(mntmNewMenuItem_1);
 		
 		JLabel label_4 = new JLabel("    ");
@@ -314,7 +315,7 @@ public class UI {
 		Estu_Agregar.add(EA_phone);
 		
 		JLabel EA_result = new JLabel("");
-		EA_result.setBounds(12, 228, 285, 15);
+		EA_result.setBounds(100, 155, 285, 15);
 		Estu_Agregar.add(EA_result);
 		
 		JButton btnAgregar = new JButton("Agregar");
@@ -343,7 +344,7 @@ public class UI {
 				}
 			}
 		});
-		btnAgregar.setBounds(421, 126, 117, 25);
+		btnAgregar.setBounds(421, 148, 117, 25);
 		Estu_Agregar.add(btnAgregar);
 		
 		JPanel Estu_Consultar = new JPanel();
@@ -872,7 +873,7 @@ public class UI {
 		
 		mntmRegistrarEstudiante.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				frmAdministracinDeSalas.setBounds(100, 100, 550, 210);
+				frmAdministracinDeSalas.setBounds(100, 100, 550, 230);
 				frmAdministracinDeSalas.setLocationRelativeTo(null);
 				clayout.show(Cards, "Estu_Agregar");
 			}
@@ -1214,13 +1215,22 @@ public class UI {
 				clayout.show(Cards, "Analisis_datos");
 				dataLayout.show(Analisis_datos, "AD_topsalas");
 				
-
-		        // Creando el Grafico
 		        JFreeChart chart = ChartFactory.createPieChart("Top 5 salas",Reservaciones.getTopCareers());
 
-		        // Crear el Panel del Grafico con ChartPanel
 		        ChartPanel chartPanel = new ChartPanel(chart);
 		        AD_topsalas.setViewportView(chartPanel);
+		        
+			}
+		});
+		mntmNewMenuItem_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				clayout.show(Cards, "Analisis_datos");
+				dataLayout.show(Analisis_datos, "AD_topcareers");
+				
+		        //JFreeChart chart = ChartFactory.createBarChart("Top 5 carreas", categoryAxisLabel, valueAxisLabel, Reservaciones.getTopCareers());
+
+		        //ChartPanel chartPanel = new ChartPanel(chart);
+		        //AD_topsalas.setViewportView(chartPanel);
 		        
 			}
 		});
