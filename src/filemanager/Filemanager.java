@@ -12,7 +12,6 @@ public class Filemanager {
 				new ObjectOutputStream(new FileOutputStream(fileName))) {
 
 			oos.writeObject(pOb);
-			System.out.println("Done");
 
 		} catch (Exception ex) {
 			ex.printStackTrace();

@@ -113,46 +113,43 @@ public class Reservaciones {
 	}
 	
 	static DefaultPieDataset getTopCareers() {
-		DefaultPieDataset data = new DefaultPieDataset();
-		
 		ArrayList<DataCounter> top = new ArrayList<DataCounter>();
 		
-		for(int i = 0; i < reservations.size();i++){
-			 
-			boolean eFlag = false;
-			
+		for(int i = 1; i < reservations.size();i++){
+			if(top.isEmpty()) {
+				top.add(new DataCounter(reservations.get(i).getStudent().getCareer(),1));
+			} else
 			for(int i2 = 0; i2 < top.size();i2++) {
 				if(top.get(i2).getName().equals(reservations.get(i).getStudent().getCareer())) {
 					top.get(i2).incValue();
-					eFlag = true;
 					break;
+				} else {
+					if(i2 + 1 == top.size()) {
+						top.add(new DataCounter(reservations.get(i).getStudent().getCareer(),1));
+					}
 				}
 			}
-			
-			if(!eFlag) {
-				top.add(new DataCounter(reservations.get(i).getStudent().getCareer(),1));
-			}
-			
 		}
 		ArrayList<DataCounter> tmptop = new ArrayList<DataCounter>();
 		
-		
 		for(int i2 = 0; i2 < top.size();i2++) {
-			if(tmptop.size() == 0) {
+			if(tmptop.isEmpty()) {
 				tmptop.add(top.get(i2));
-			}
+			} else
 			for(int i = 0; i < tmptop.size();i++) {
 				System.out.println("Ciclo!!!");
 				if(tmptop.get(i).getValue() < top.get(i2).getValue()) {
 					tmptop.add(i, top.get(i2));
 					break;
 				} else {
-					if(i == tmptop.size() - 1) {
+					if(i + 1 == tmptop.size()) {
 						tmptop.add(top.get(i2));
 					}
 				}
 			}
 		}
+		
+		DefaultPieDataset data = new DefaultPieDataset();
 		
 		for(int i = 0; i < tmptop.size() && i < 5;i++) {
 			data.setValue(tmptop.get(i).getName(), tmptop.get(i).getValue());

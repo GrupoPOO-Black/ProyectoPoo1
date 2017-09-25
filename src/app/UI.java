@@ -91,8 +91,10 @@ public class UI {
 
 	/**
 	 * Launch the application.
+	 * @throws IOException 
+	 * @throws ClassNotFoundException 
 	 */
-	public static void init() {
+	public static void init() throws ClassNotFoundException, IOException {
 		
 		try {
 			loadProp();
@@ -1224,6 +1226,15 @@ public class UI {
 		});
 		
 		
+		
+		
+		ActionListener saveAll = new ActionListener() {
+			  public void actionPerformed(ActionEvent e) {
+				  AdminSalas.saveData();
+			  }
+		};
+		Timer saveTimer = new Timer(5000, saveAll);
+		saveTimer.start();
 		
 		ActionListener updateClockAction = new ActionListener() {
 			  public void actionPerformed(ActionEvent e) {
